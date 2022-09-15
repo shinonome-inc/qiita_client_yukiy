@@ -67,6 +67,9 @@ class _TopPageState extends State<TopPage> {
                 backgroundColor: Colors.transparent,
                 onPressed: () {},
               ),
+              const SizedBox(
+                height: 81,
+              )
             ],
           ),
         ],
