@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/ui_components/thin_long_rounded_button.dart';
 
+import 'feed_page.dart';
+
 class TopPage extends StatefulWidget {
   const TopPage({Key? key}) : super(key: key);
 
@@ -60,7 +62,12 @@ class _TopPageState extends State<TopPage> {
               ThinLongRoundedButton(
                 text: 'ログイン',
                 backgroundColor: const Color(0xFF468300),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FeedPage()),
+                  );
+                },
               ),
               ThinLongRoundedButton(
                 text: 'ログインせずに利用する',
