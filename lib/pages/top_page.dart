@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/bottom_navigation.dart';
 import 'package:qiita_client_yukiy/ui_components/thin_long_rounded_button.dart';
 
 class TopPage extends StatefulWidget {
@@ -60,7 +61,13 @@ class _TopPageState extends State<TopPage> {
               ThinLongRoundedButton(
                 text: 'ログイン',
                 backgroundColor: const Color(0xFF468300),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BottomNavigation()),
+                  );
+                },
               ),
               ThinLongRoundedButton(
                 text: 'ログインせずに利用する',
