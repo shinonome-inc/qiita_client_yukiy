@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qiita_client_yukiy/pages/bottom_navigation_bar.dart';
+import 'package:qiita_client_yukiy/pages/bottom_navigation.dart';
 import 'package:qiita_client_yukiy/ui_components/thin_long_rounded_button.dart';
 
 class TopPage extends StatefulWidget {
