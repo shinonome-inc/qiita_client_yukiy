@@ -43,31 +43,34 @@ class _BottomNavigationState extends State<BottomNavigation> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_outlined,
-                color: Color.fromRGBO(130, 130, 130, 1)),
+            icon: Icon(
+              Icons.format_list_bulleted_outlined,
+            ),
             label: 'フィード',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.label_outline,
-                color: Color.fromRGBO(130, 130, 130, 1)),
+            icon: Icon(
+              Icons.label_outline,
+            ),
             label: 'タグ',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline,
-                color: Color.fromRGBO(130, 130, 130, 1)),
+            icon: Icon(
+              Icons.person_outline,
+            ),
             label: 'マイページ',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings_outlined,
-              color: Color.fromRGBO(130, 130, 130, 1),
             ),
             label: '設定',
           ),
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectIndex,
-        selectedItemColor: Colors.blue[800],
+        unselectedItemColor: const Color(0xFF828282),
+        selectedItemColor: const Color(0xFF74C13A),
         onTap: _onTapItem,
       ),
     );
