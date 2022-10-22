@@ -71,6 +71,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
         currentIndex: _selectIndex,
         unselectedItemColor: const Color(0xFF828282),
         selectedItemColor: const Color(0xFF74C13A),
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
         onTap: _onTapItem,
       ),
     );
