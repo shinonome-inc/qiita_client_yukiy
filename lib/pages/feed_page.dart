@@ -23,6 +23,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          elevation: 0,
           title: const Text(
             'Feed',
             style: TextStyle(

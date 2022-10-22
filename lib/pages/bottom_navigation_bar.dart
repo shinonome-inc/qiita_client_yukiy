@@ -40,40 +40,46 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.format_list_bulleted_outlined,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+            border: Border(
+          top: BorderSide(width: 0.5, color: Color(0xFF828282)),
+        )),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.format_list_bulleted_outlined,
+              ),
+              label: 'フィード',
             ),
-            label: 'フィード',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.label_outline,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.label_outline,
+              ),
+              label: 'タグ',
             ),
-            label: 'タグ',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
+              ),
+              label: 'マイページ',
             ),
-            label: 'マイページ',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings_outlined,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings_outlined,
+              ),
+              label: '設定',
             ),
-            label: '設定',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectIndex,
-        unselectedItemColor: const Color(0xFF828282),
-        selectedItemColor: const Color(0xFF74C13A),
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        onTap: _onTapItem,
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectIndex,
+          unselectedItemColor: const Color(0xFF828282),
+          selectedItemColor: const Color(0xFF74C13A),
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          onTap: _onTapItem,
+        ),
       ),
     );
   }
