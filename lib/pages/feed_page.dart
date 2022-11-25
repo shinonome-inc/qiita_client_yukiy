@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 class FeedPage extends StatefulWidget {
@@ -10,62 +8,71 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
+  Widget _searchTextField() {
+    return const TextField();
+  }
+
+  Widget _defaultListView() {
+    return ListView.builder(itemBuilder: (context, index) {
+      return const Card();
+    });
+  }
+
   final List<String> entries = <String>["a", "b", "c"];
   final List<int> colorCodes = <int>[600, 500, 100];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.separated(
-        padding: const EdgeInsets.all(8),
-        itemCount: entries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 50,
-            color: Colors.amber[colorCodes[index]],
-            child: Center(child: Text('記事 ${entries[index]}')),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          color: Colors.black,
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text(
+          'Feed',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Pacifico-Regular',
+          ),
+        ),
+        backgroundColor: Colors.white,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(65.0),
+          child: Container(
+            height: 65.0,
+            margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        cursorColor: Colors.grey,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(30, 7, 260, 7),
+                          fillColor: const Color.fromRGBO(118, 118, 128, 0.12),
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none),
+                          hintText: 'Search',
+                          prefixIcon: const Icon(Icons.search),
+                          iconColor: const Color.fromRGBO(142, 142, 147, 0),
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 17,
+                            letterSpacing: -0.408,
+                            fontFamily: "Noto_Sans_JP",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
-  }
-}
-
-class Album {
-  final int userId;
-  final int id;
-  final String title;
-
-  const Album({
-    required this.userId,
-    required this.id,
-    required this.title,
-  });
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
-    );
-  }
-}
-
-Future<Album> fetchAlbum() async {
-  var http;
-  final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Album.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
   }
 }
