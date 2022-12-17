@@ -31,7 +31,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
           child: TextField(
             cursorColor: Colors.grey,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.fromLTRB(30, 7, 260, 7),
+              contentPadding: const EdgeInsets.fromLTRB(30, 7, 1, 7),
               fillColor: const Color.fromRGBO(118, 118, 128, 0.12),
               filled: true,
               border: OutlineInputBorder(

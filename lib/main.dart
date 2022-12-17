@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/pages/top_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp(
+    items: [],
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required List<String> items}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
