@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget implements PreferredSizeWidget {
+class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   // TODO: implement preferredSize
   Size get preferredSize => const Size(375, 142);
 
-  const SearchBar({
+  const UpperBar({
     Key? key,
+    this.showSearchBar = false,
   }) : super(key: key);
 
+  final bool showSearchBar;
   @override
   Widget build(BuildContext context) {
     return AppBar(

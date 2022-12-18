@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qiita_client_yukiy/services/qiita_client.dart';
-import 'package:qiita_client_yukiy/ui_components/search_bar.dart';
+import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 import '../models/article.dart';
 
@@ -18,7 +18,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: SearchBar(),
+      appBar: UpperBar(),
       body: ArticleListPage(),
     );
   }
