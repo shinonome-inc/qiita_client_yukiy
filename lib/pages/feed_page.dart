@@ -18,7 +18,9 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: UpperBar(),
+      appBar: UpperBar(
+        showSearchBar: true,
+      ),
       body: ArticleListPage(),
     );
   }
