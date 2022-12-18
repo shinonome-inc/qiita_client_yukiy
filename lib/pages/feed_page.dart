@@ -79,7 +79,11 @@ class ArticleListView extends StatelessWidget {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(article.user.iconUrl),
             ),
-            title: Text(article.title),
+            title: Text(
+              article.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             subtitle: Text(
                 '@${article.user.id} 投稿日:${DateFormat('yyyy/MM/dd').format(DateTime.parse(article.dateTime))} いいね:${article.likesCount}'));
       },
