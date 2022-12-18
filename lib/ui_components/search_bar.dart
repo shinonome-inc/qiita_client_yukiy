@@ -7,10 +7,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
 
   const SearchBar({
     Key? key,
-    required this.text,
   }) : super(key: key);
-
-  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none),
-              hintText: (text),
+              hintText: 'Search',
               prefixIcon: const Icon(Icons.search),
               iconColor: const Color.fromRGBO(142, 142, 147, 0),
               hintStyle: const TextStyle(
