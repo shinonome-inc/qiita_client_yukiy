@@ -5,12 +5,14 @@ class Article {
   final String url;
   final User user;
   final String dateTime;
+  final int likesCount;
 
   Article(
       {required this.title,
       required this.url,
       required this.user,
-      required this.dateTime});
+      required this.dateTime,
+      required this.likesCount});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
@@ -18,6 +20,7 @@ class Article {
       url: json['url'],
       user: User.fromJson(json['user']),
       dateTime: json['created_at'],
+      likesCount: json['likes_count'],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/search_bar.dart';
 
@@ -79,8 +80,8 @@ class ArticleListView extends StatelessWidget {
               backgroundImage: NetworkImage(article.user.iconUrl),
             ),
             title: Text(article.title),
-            subtitle: Text('@${article.user.id}' '投稿日:${article.dateTime}'),
-            onTap: () {});
+            subtitle: Text(
+                '@${article.user.id} 投稿日:${DateFormat('yyyy/MM/dd').format(DateTime.parse(article.dateTime))} いいね:${article.likesCount}'));
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(
         color: Color.fromRGBO(178, 178, 178, 1),
