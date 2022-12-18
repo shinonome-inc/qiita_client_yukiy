@@ -10,7 +10,9 @@ class QiitaClient {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final List<dynamic> jsonArray = json.decode(response.body);
-      return jsonArray.map((json) => Article.fromJson(json)).toList();
+      final articleList =
+          jsonArray.map((json) => Article.fromJson(json)).toList();
+      return articleList;
     } else {
       throw Exception('Request failed with status: ${response.statusCode}');
     }
