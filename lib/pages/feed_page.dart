@@ -69,6 +69,13 @@ class ArticleListView extends StatelessWidget {
   final List<Article> articles;
   const ArticleListView({Key? key, required this.articles}) : super(key: key);
 
+  String subtitle(Article article) {
+    final dateTime = DateTime.parse(article.dateTime);
+    final dateFormat = DateFormat('yyyy/MM/dd');
+    final postedTime = dateFormat.format(dateTime);
+    return '@${article.user.id} 投稿日:$postedTime いいね:${article.likesCount}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -85,7 +92,10 @@ class ArticleListView extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-                '@${article.user.id} 投稿日:${DateFormat('yyyy/MM/dd').format(DateTime.parse(article.dateTime))} いいね:${article.likesCount}'));
+              subtitle(article),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ));
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(
         color: Color.fromRGBO(178, 178, 178, 1),
