@@ -20,6 +20,7 @@ class _FeedPageState extends State<FeedPage> {
     return const Scaffold(
       appBar: UpperBar(
         showSearchBar: true,
+        appBarText: 'Feed',
       ),
       body: ArticleListPage(),
     );
