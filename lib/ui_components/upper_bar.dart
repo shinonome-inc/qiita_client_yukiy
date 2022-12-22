@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/ui_components/search_bar.dart';
-import 'package:qiita_client_yukiy/ui_components/upper_name.dart';
 
 class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -21,6 +20,26 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: Colors.white,
       bottom: showSearchBar ? const SearchBar() : null,
+    );
+  }
+}
+
+class UpperName extends StatelessWidget {
+  const UpperName({
+    super.key,
+    required this.upperName,
+  });
+
+  final String upperName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      upperName,
+      style: const TextStyle(
+        color: Colors.black,
+        fontFamily: 'Pacifico-Regular',
+      ),
     );
   }
 }
