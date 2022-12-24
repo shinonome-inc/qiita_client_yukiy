@@ -26,6 +26,7 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       bottom: showSearchBar ? const SearchBar() : null,
+      automaticallyImplyLeading: false,
     );
   }
 }
