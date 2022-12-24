@@ -6,35 +6,13 @@ import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 import '../models/article.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({Key? key}) : super(key: key);
+  const FeedPage({super.key});
 
   @override
   State<FeedPage> createState() => _FeedPageState();
 }
 
 class _FeedPageState extends State<FeedPage> {
-  List<dynamic> users = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: UpperBar(
-        showSearchBar: true,
-        appBarText: 'Feed',
-      ),
-      body: ArticleListPage(),
-    );
-  }
-}
-
-class ArticleListPage extends StatefulWidget {
-  const ArticleListPage({super.key});
-
-  @override
-  State<ArticleListPage> createState() => _ArticleListPageState();
-}
-
-class _ArticleListPageState extends State<ArticleListPage> {
   late Future<List<Article>> articles;
   @override
   void initState() {
@@ -45,6 +23,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const UpperBar(
+        showSearchBar: true,
+        appBarText: 'Feed',
+      ),
       body: Center(
         child: FutureBuilder<List<Article>>(
           future: articles,
