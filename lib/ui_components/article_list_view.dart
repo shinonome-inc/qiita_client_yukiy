@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qiita_client_yukiy/models/article.dart';
@@ -20,8 +21,21 @@ class ArticleListView extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final article = articles[index];
         return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(article.user.iconUrl),
+            leading: CachedNetworkImage(
+              imageBuilder: (context, imageProvider) => Container(
+
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: imageProvider,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageUrl: article.user.iconUrl,
+              width: 38,
+              height: 38,
             ),
             title: Text(
               article.title,
