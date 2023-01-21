@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qiita_client_yukiy/models/article.dart';
+import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
   final List<Article> articles;
@@ -21,32 +22,44 @@ class ArticleListView extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final article = articles[index];
         return ListTile(
-            leading: CachedNetworkImage(
-              imageBuilder: (context, imageProvider) => Container(
-
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: imageProvider,
-                  ),
+          leading: CachedNetworkImage(
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: imageProvider,
                 ),
               ),
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              imageUrl: article.user.iconUrl,
-              width: 38,
-              height: 38,
             ),
-            title: Text(
-              article.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Text(
-              subtitle(article),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ));
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            imageUrl: article.user.iconUrl,
+            width: 38,
+            height: 38,
+          ),
+          title: Text(
+            article.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            subtitle(article),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(10))),
+              builder: (BuildContext context) {
+                return const SingleChildScrollView(child: ModalArticle());
+              },
+            );
+          },
+        );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(
         color: Color.fromRGBO(178, 178, 178, 1),
