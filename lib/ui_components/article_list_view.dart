@@ -6,7 +6,8 @@ import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
   final List<Article> articles;
-  const ArticleListView({Key? key, required this.articles}) : super(key: key);
+  ArticleListView({Key? key, required this.articles}) : super(key: key);
+  double? _deviceWidth, _deviceHeight;
 
   String subtitle(Article article) {
     final dateTime = DateTime.parse(article.dateTime);
@@ -17,6 +18,11 @@ class ArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _deviceWidth = MediaQuery.of(context).size.width;
+    _deviceHeight = MediaQuery.of(context).size.height;
+    print('width: $_deviceWidth');
+    print('height: $_deviceHeight');
+
     return ListView.separated(
       itemCount: articles.length,
       itemBuilder: (BuildContext context, int index) {
@@ -49,13 +55,16 @@ class ArticleListView extends StatelessWidget {
           ),
           onTap: () {
             showModalBottomSheet(
+              backgroundColor: Colors.transparent,
               context: context,
               isScrollControlled: true,
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(10))),
               builder: (BuildContext context) {
-                return const SingleChildScrollView(child: ModalArticle());
+                return SizedBox(
+                  height: _deviceHeight! * 0.9,
+                  child: ModalArticle(
+                    url: article.url,
+                  ),
+                );
               },
             );
           },

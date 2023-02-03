@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:qiita_client_yukiy/services/web_view_screen.dart';
-import 'package:qiita_client_yukiy/ui_components/modal_text.dart';
+
+import '../services/web_view_screen.dart';
 
 class ModalArticle extends StatelessWidget {
-  const ModalArticle({Key? key}) : super(key: key);
+  final String url;
+  const ModalArticle({Key? key, required this.url}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        ModalText(
-          modalText: 'article',
-          modalTextColor: Colors.black,
-          modalTextStyle: 'Pacifico-Regular',
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(bottom: 11),
+          alignment: Alignment.bottomCenter,
+          height: 59,
+          decoration: const BoxDecoration(
+              color: Color.fromRGBO(249, 249, 249, 1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              )),
+          child: const Text(
+            'Article',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: 'Pacifico-Regular', fontSize: 17),
+          ),
         ),
-        WebViewScreen(),
+        Expanded(child: WebViewScreen(url: url)),
       ],
     );
   }
