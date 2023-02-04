@@ -13,12 +13,9 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-<<<<<<< Updated upstream:lib/services/web_view_screen.dart
   late String article;
   double _webViewHeight = 0;
-=======
-git   double _webViewHeight = 0;
->>>>>>> Stashed changes:lib/pages/web_view_screen.dart
+
   late WebViewController _webViewController;
 
   Future<void> _onPageFinished(BuildContext context, String url) async {
