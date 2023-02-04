@@ -13,7 +13,6 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  late String article;
   double _webViewHeight = 0;
   late WebViewController _webViewController;
 
