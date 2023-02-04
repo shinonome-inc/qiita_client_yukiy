@@ -19,8 +19,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Future<void> _onPageFinished(BuildContext context, String url) async {
     double newHeight = double.parse(
-      await _webViewController
-          .evaluateJavascript("document.documentElement.scrollHeight;"),
+      await _webViewController.runJavascriptReturningResult(
+          "document.documentElement.scrollHeight;"),
     );
     setState(() {
       _webViewHeight = newHeight;
