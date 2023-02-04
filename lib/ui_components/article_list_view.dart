@@ -20,8 +20,6 @@ class ArticleListView extends StatelessWidget {
   Widget build(BuildContext context) {
     _deviceWidth = MediaQuery.of(context).size.width;
     _deviceHeight = MediaQuery.of(context).size.height;
-    print('width: $_deviceWidth');
-    print('height: $_deviceHeight');
 
     return ListView.separated(
       itemCount: articles.length,
