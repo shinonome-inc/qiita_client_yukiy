@@ -40,7 +40,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       initialChildSize: 1.0,
       builder: (BuildContext context, ScrollController scrollController) {
         return SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           child: SizedBox(
             height: _webViewHeight,
             child: WebView(

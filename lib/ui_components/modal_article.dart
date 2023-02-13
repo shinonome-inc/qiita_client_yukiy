@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/web_view_screen.dart';
+import '../pages/web_view_screen.dart';
 
 class ModalArticle extends StatelessWidget {
   final String url;
