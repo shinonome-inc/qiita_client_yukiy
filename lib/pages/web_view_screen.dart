@@ -13,10 +13,10 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  late String article;
-  double _webViewHeight = 0;
-
   late WebViewController _webViewController;
+  double _webViewHeight = 0;
+  late String article;
+ 
 
   Future<void> _onPageFinished(BuildContext context, String url) async {
     double newHeight = double.parse(

@@ -13,26 +13,59 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  late Future<List<Article>> articles;
+  List<Article> listArticle = [];
+  late Future<List<Article>> futureArticles;
   @override
   void initState() {
-    articles = QiitaClient.fetchArticle();
+    futureArticles = QiitaClient.fetchArticle("");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const UpperBar(
+      appBar: UpperBar(
         showSearchBar: true,
         appBarText: 'Feed',
+        textField: TextField(
+          onSubmitted: (value) {
+            if (value.isEmpty) {
+              print("https://qiita.com/api/v2/items");
+            } else {
+              setState(() {
+                listArticle = [];
+                futureArticles = QiitaClient.fetchArticle(value);
+              });
+              print(listArticle);
+            }
+          },
+          cursorColor: Colors.grey,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.fromLTRB(30, 7, 1, 7),
+            fillColor: const Color.fromRGBO(118, 118, 128, 0.12),
+            filled: true,
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none),
+            hintText: 'Search',
+            prefixIcon: const Icon(Icons.search),
+            iconColor: const Color.fromRGBO(142, 142, 147, 0),
+            hintStyle: const TextStyle(
+              color: Colors.grey,
+              fontSize: 17,
+              letterSpacing: -0.408,
+              fontFamily: "Noto_Sans_JP",
+            ),
+          ),
+        ),
       ),
       body: Center(
         child: FutureBuilder<List<Article>>(
-          future: articles,
+          future: futureArticles,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ArticleListView(articles: snapshot.data!);
+              listArticle = snapshot.data!;
+              return ArticleListView(articles: listArticle);
             } else if (snapshot.hasError) {
               return const Icon(
                 Icons.error_outline,
