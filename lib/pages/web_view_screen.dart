@@ -13,17 +13,18 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  double _webViewHeight = 0;
   late WebViewController _webViewController;
-
+  double _webViewHeight = 0;
   Future<void> _onPageFinished(BuildContext context, String url) async {
     double newHeight = double.parse(
       await _webViewController.runJavascriptReturningResult(
           "document.documentElement.scrollHeight;"),
     );
-    setState(() {
-      _webViewHeight = newHeight;
-    });
+    setState(
+      () {
+        _webViewHeight = newHeight;
+      },
+    );
   }
 
   @override
@@ -40,7 +41,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       initialChildSize: 1.0,
       builder: (BuildContext context, ScrollController scrollController) {
         return SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
+          physics: ClampingScrollPhysics(),
           child: SizedBox(
             height: _webViewHeight,
             child: WebView(
