@@ -10,9 +10,10 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
-        preferredSize: const Size.fromHeight(114),
-        child: Container(
-            margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
-            child: textField));
+      preferredSize: const Size.fromHeight(114),
+      child: Container(
+          margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
+          child: textField),
+    );
   }
 }
