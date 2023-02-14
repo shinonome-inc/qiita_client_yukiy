@@ -15,16 +15,17 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   late WebViewController _webViewController;
   double _webViewHeight = 0;
+  late String article;
+ 
+
   Future<void> _onPageFinished(BuildContext context, String url) async {
     double newHeight = double.parse(
       await _webViewController.runJavascriptReturningResult(
           "document.documentElement.scrollHeight;"),
     );
-    setState(
-      () {
-        _webViewHeight = newHeight;
-      },
-    );
+    setState(() {
+      _webViewHeight = newHeight;
+    });
   }
 
   @override
