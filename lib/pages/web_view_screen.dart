@@ -16,7 +16,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
   late WebViewController _webViewController;
   double _webViewHeight = 0;
   late String article;
- 
 
   Future<void> _onPageFinished(BuildContext context, String url) async {
     double newHeight = double.parse(
@@ -42,7 +41,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       initialChildSize: 1.0,
       builder: (BuildContext context, ScrollController scrollController) {
         return SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           child: SizedBox(
             height: _webViewHeight,
             child: WebView(

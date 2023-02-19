@@ -15,10 +15,38 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   List<Article> listArticle = [];
   late Future<List<Article>> futureArticles;
+  late ScrollController _scrollController;
+  late bool _isLoading = true;
+
   @override
   void initState() {
-    futureArticles = QiitaClient.fetchArticle("");
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    _fetchData();
     super.initState();
+    print("ajja");
+  }
+
+  Future<void> _fetchData() async {
+    futureArticles = QiitaClient.fetchArticle("");
+    setState(
+      () {
+        _isLoading = false;
+      },
+    );
+  }
+
+  void _scrollListener() async {
+    double positionRate =
+        _scrollController.offset / _scrollController.position.maxScrollExtent;
+    const double threshold = 0.9;
+    if (positionRate > threshold && !_isLoading) {
+      setState(() {
+        _isLoading = true;
+        print("呼ばれたよ");
+      });
+      await _fetchData();
+    }
   }
 
   @override
@@ -36,7 +64,6 @@ class _FeedPageState extends State<FeedPage> {
                 listArticle = [];
                 futureArticles = QiitaClient.fetchArticle(value);
               });
-              print(listArticle);
             }
           },
           cursorColor: Colors.grey,
@@ -64,9 +91,15 @@ class _FeedPageState extends State<FeedPage> {
           future: futureArticles,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              listArticle = snapshot.data!;
-              return ArticleListView(articles: listArticle);
+              listArticle = listArticle + snapshot.data!;
+              return ArticleListView(
+                articles: listArticle,
+                scrollController: _scrollController,
+                itemCount:
+                    _isLoading ? listArticle.length + 1 : listArticle.length,
+              );
             } else if (snapshot.hasError) {
+              print(snapshot.error);
               return const Icon(
                 Icons.error_outline,
                 color: Colors.red,
