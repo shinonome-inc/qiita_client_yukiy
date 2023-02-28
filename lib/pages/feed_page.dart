@@ -25,18 +25,17 @@ class _FeedPageState extends State<FeedPage> {
     _scrollController.addListener(_scrollListener);
     _fetchData();
     super.initState();
-    print("ajja");
   }
 
   Future<void> _fetchData() async {
     await Future.delayed(Duration(seconds: 1));
     _isLoading = false;
     futureArticles = QiitaClient.fetchArticle("", pageNumber);
-    listArticle.addAll(await futureArticles!); //位置を変更
+    listArticle.addAll(await futureArticles!);
 
     setState(
       () {
-        print('pageNumber is $pageNumber');
+        print('表示件数: ${listArticle.length}');
       },
     );
   }
@@ -98,6 +97,7 @@ class _FeedPageState extends State<FeedPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               pageNumber++;
+              print('pageNumber is $pageNumber');
               // listArticle = listArticle + snapshot.data!;
               return ArticleListView(
                 articles: listArticle,
