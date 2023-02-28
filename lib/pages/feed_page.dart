@@ -14,7 +14,7 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   List<Article> listArticle = [];
-  late Future<List<Article>> futureArticles;
+  Future<List<Article>>? futureArticles;
   late ScrollController _scrollController;
   late bool _isLoading = true;
   int pageNumber = 1;
@@ -32,8 +32,7 @@ class _FeedPageState extends State<FeedPage> {
     await Future.delayed(Duration(seconds: 1));
     _isLoading = false;
     futureArticles = QiitaClient.fetchArticle("", pageNumber);
-    // _isLoading = false; //isLoadingの位置を変更
-    listArticle.addAll(await futureArticles); //位置を変更
+    listArticle.addAll(await futureArticles!); //位置を変更
 
     setState(
       () {
@@ -54,24 +53,6 @@ class _FeedPageState extends State<FeedPage> {
       await _fetchData();
       print("fetched");
     }
-  }
-
-  Widget _loadingView() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            CircularProgressIndicator(),
-            SizedBox(
-              height: 8,
-            ),
-            Text('通信中...'),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -132,7 +113,7 @@ class _FeedPageState extends State<FeedPage> {
                 size: 60,
               );
             }
-            return _loadingView();
+            return const CircularProgressIndicator();
           },
         ),
       ),
