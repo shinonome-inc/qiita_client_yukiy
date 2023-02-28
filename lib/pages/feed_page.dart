@@ -29,13 +29,14 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> _fetchData() async {
-    futureArticles = QiitaClient.fetchArticle("", pageNumber);
+    await Future.delayed(Duration(seconds: 1));
     _isLoading = false;
-    listArticle.addAll(await futureArticles);
+    futureArticles = QiitaClient.fetchArticle("", pageNumber);
+    // _isLoading = false; //isLoadingの位置を変更
+    listArticle.addAll(await futureArticles); //位置を変更
 
     setState(
       () {
-        pageNumber++;
         print('pageNumber is $pageNumber');
       },
     );
@@ -44,7 +45,6 @@ class _FeedPageState extends State<FeedPage> {
   void _scrollListener() async {
     double positionRate =
         _scrollController.offset / _scrollController.position.maxScrollExtent;
-    print(positionRate);
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
       setState(() {
@@ -54,6 +54,24 @@ class _FeedPageState extends State<FeedPage> {
       await _fetchData();
       print("fetched");
     }
+  }
+
+  Widget _loadingView() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            CircularProgressIndicator(),
+            SizedBox(
+              height: 8,
+            ),
+            Text('通信中...'),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -98,7 +116,8 @@ class _FeedPageState extends State<FeedPage> {
           future: futureArticles,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              listArticle = listArticle + snapshot.data!;
+              pageNumber++;
+              // listArticle = listArticle + snapshot.data!;
               return ArticleListView(
                 articles: listArticle,
                 scrollController: _scrollController,
@@ -113,7 +132,7 @@ class _FeedPageState extends State<FeedPage> {
                 size: 60,
               );
             }
-            return const CircularProgressIndicator();
+            return _loadingView();
           },
         ),
       ),
