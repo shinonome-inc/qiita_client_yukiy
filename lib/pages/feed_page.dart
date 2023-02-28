@@ -17,6 +17,7 @@ class _FeedPageState extends State<FeedPage> {
   late Future<List<Article>> futureArticles;
   late ScrollController _scrollController;
   late bool _isLoading = true;
+  int pageNumber = 1;
 
   @override
   void initState() {
@@ -28,10 +29,14 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> _fetchData() async {
-    futureArticles = QiitaClient.fetchArticle("");
+    futureArticles = QiitaClient.fetchArticle("", pageNumber);
+    _isLoading = false;
+    listArticle.addAll(await futureArticles);
+
     setState(
       () {
-        _isLoading = false;
+        pageNumber++;
+        print('pageNumber is $pageNumber');
       },
     );
   }
@@ -39,13 +44,15 @@ class _FeedPageState extends State<FeedPage> {
   void _scrollListener() async {
     double positionRate =
         _scrollController.offset / _scrollController.position.maxScrollExtent;
+    print(positionRate);
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
       setState(() {
         _isLoading = true;
-        print("呼ばれたよ");
+        print("isLoadingtrue");
       });
       await _fetchData();
+      print("fetched");
     }
   }
 
@@ -62,7 +69,7 @@ class _FeedPageState extends State<FeedPage> {
             } else {
               setState(() {
                 listArticle = [];
-                futureArticles = QiitaClient.fetchArticle(value);
+                futureArticles = QiitaClient.fetchArticle(value, 1);
               });
             }
           },

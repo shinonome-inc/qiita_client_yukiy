@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 import '../models/article.dart';
 
 class QiitaClient {
-  static Future<List<Article>> fetchArticle(String searchValue) async {
-    String url = 'https://qiita.com/api/v2/items?query=title%3A$searchValue';
+  static Future<List<Article>> fetchArticle(
+      String searchValue, int pageNumber) async {
+    String url =
+        'https://qiita.com/api/v2/items?page=$pageNumber&query=title%3A$searchValue';
     print('get');
     final authorization = {
       "Authorization": "Bearer defd822a3e7702cac78d66eefe2ed5c8d174e202"
