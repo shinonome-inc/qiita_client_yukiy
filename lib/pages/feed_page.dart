@@ -32,11 +32,10 @@ class _FeedPageState extends State<FeedPage> {
     _isLoading = false;
     futureArticles = QiitaClient.fetchArticle("", pageNumber);
     listArticle.addAll(await futureArticles!);
+    print('表示件数: ${listArticle.length}');
 
     setState(
-      () {
-        print('表示件数: ${listArticle.length}');
-      },
+      () {},
     );
   }
 
@@ -47,10 +46,8 @@ class _FeedPageState extends State<FeedPage> {
     if (positionRate > threshold && !_isLoading) {
       setState(() {
         _isLoading = true;
-        print("isLoadingtrue");
       });
       await _fetchData();
-      print("fetched");
     }
   }
 
@@ -95,10 +92,10 @@ class _FeedPageState extends State<FeedPage> {
         child: FutureBuilder<List<Article>>(
           future: futureArticles,
           builder: (context, snapshot) {
+            print("fetched");
             if (snapshot.hasData) {
               pageNumber++;
               print('pageNumber is $pageNumber');
-              // listArticle = listArticle + snapshot.data!;
               return ArticleListView(
                 articles: listArticle,
                 scrollController: _scrollController,
