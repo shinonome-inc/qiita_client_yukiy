@@ -28,14 +28,20 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> _fetchData() async {
+    print("fetched");
     await Future.delayed(Duration(seconds: 1));
+    print('pageNumber is $pageNumber');
     _isLoading = false;
     futureArticles = QiitaClient.fetchArticle("", pageNumber);
     listArticle.addAll(await futureArticles!);
     print('表示件数: ${listArticle.length}');
 
     setState(
-      () {},
+      () {
+        if (listArticle.isNotEmpty) {
+          pageNumber++;
+        }
+      },
     );
   }
 
@@ -58,14 +64,16 @@ class _FeedPageState extends State<FeedPage> {
         showSearchBar: true,
         appBarText: 'Feed',
         textField: TextField(
-          onSubmitted: (value) {
+          onSubmitted: (value) async {
             if (value.isEmpty) {
               print("https://qiita.com/api/v2/items");
             } else {
               setState(() {
                 listArticle = [];
-                futureArticles = QiitaClient.fetchArticle(value, 1);
+                pageNumber = 1;
               });
+              futureArticles = QiitaClient.fetchArticle(value, pageNumber);
+              listArticle.addAll(await futureArticles!);
             }
           },
           cursorColor: Colors.grey,
@@ -92,10 +100,7 @@ class _FeedPageState extends State<FeedPage> {
         child: FutureBuilder<List<Article>>(
           future: futureArticles,
           builder: (context, snapshot) {
-            print("fetched");
             if (snapshot.hasData) {
-              pageNumber++;
-              print('pageNumber is $pageNumber');
               return ArticleListView(
                 articles: listArticle,
                 scrollController: _scrollController,
