@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/article.dart';
+import '../models/tag.dart';
 
 class QiitaClient {
   static Future<List<Article>> fetchArticle(
@@ -21,6 +22,23 @@ class QiitaClient {
     } else {
       throw Exception(
           'Request failed with status: ${response.statusCode}${response.body}');
+    }
+  }
+
+  static Future<List<Tag>> fetchTags(int pageNumber) async {
+    String url =
+        'https://qiita.com/api/v2/tags?page=$pageNumber&per_page=20&sort=count';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final tagList = jsonArray.map((json) => Tag.fromJson(json)).toList();
+      print(tagList[0].iconUrl);
+      return tagList;
+    } else {
+      throw Exception(
+        'Request failed with status: ${response.statusCode}${response.body}',
+      );
     }
   }
 }
