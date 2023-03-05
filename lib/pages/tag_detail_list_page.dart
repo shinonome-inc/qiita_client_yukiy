@@ -18,7 +18,7 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   late Future<List<Article>> futureArticles;
   @override
   void initState() {
-    futureArticles = QiitaClient.fetchArticle("");
+    futureArticles = QiitaClient.fetchTag(widget.tagName);
     super.initState();
   }
 
@@ -43,6 +43,7 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
                 size: 60,
               );
             }
+            print(snapshot.error);
             return const CircularProgressIndicator();
           },
         ),
