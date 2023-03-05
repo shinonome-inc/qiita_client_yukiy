@@ -18,7 +18,7 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 0, //影を消す
+      elevation: 0.5, //影を消す
       backgroundColor: Colors.white,
       title: Text(
         appBarText,
