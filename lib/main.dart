@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qiita_client_yukiy/pages/top_page.dart';
+import 'package:qiita_client_yukiy/pages/tag_detail_list_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TopPage(),
+      home: const TagDetailListPage(
+        tagName: 'Dart',
+      ),
     );
   }
 }
