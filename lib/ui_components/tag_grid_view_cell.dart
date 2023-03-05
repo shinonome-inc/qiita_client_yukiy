@@ -30,36 +30,30 @@ class TagGridViewCell extends StatelessWidget {
             ),
           ),
           Flexible(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    tag.id!,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
-                    maxLines: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  tag.id!,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w500),
+                  maxLines: 1,
+                ),
+                Text(
+                  "記事件数: ${tag.itemsCount}",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF828282),
                   ),
-                  Container(
-                    child: Text(
-                      "記事件数: ${tag.itemsCount}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF828282),
-                      ),
-                    ),
+                ),
+                Text(
+                  "フォロワー数: ${tag.followersCount}",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF828282),
                   ),
-                  Container(
-                    child: Text(
-                      "フォロワー数: ${tag.followersCount}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF828282),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
         ],
