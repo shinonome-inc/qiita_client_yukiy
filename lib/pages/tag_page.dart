@@ -26,9 +26,10 @@ class _TagPageState extends State<TagPage> {
   }
 
   Future<void> _fetchTagData() async {
+    List<Tag> newFetchTag;
     _isLoading = false;
-    futureTags = QiitaClient.fetchTags(pageNumber);
-    listTags.addAll(await futureTags);
+    newFetchTag = await QiitaClient.fetchTags(pageNumber);
+    listTags.addAll(newFetchTag);
   }
 
   @override
