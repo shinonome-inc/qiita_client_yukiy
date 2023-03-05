@@ -33,7 +33,6 @@ class QiitaClient {
     if (response.statusCode == 200) {
       final List<dynamic> jsonArray = json.decode(response.body);
       final tagList = jsonArray.map((json) => Tag.fromJson(json)).toList();
-      print(tagList[0].iconUrl);
       return tagList;
     } else {
       throw Exception(
