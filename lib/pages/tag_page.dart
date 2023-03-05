@@ -5,7 +5,7 @@ import 'package:qiita_client_yukiy/ui_components/tag_grid_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 class TagPage extends StatefulWidget {
-  TagPage({
+  const TagPage({
     Key? key,
   }) : super(key: key);
 
