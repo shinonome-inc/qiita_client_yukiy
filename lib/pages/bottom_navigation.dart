@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/user_not_login_page.dart';
 
 import 'feed_page.dart';
 
@@ -18,11 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       alignment: Alignment.center,
       child: const Text('タグ'),
     ),
-    Container(
-      alignment: Alignment.center,
-      color: Colors.lightBlue,
-      child: const Text('マイページ'),
-    ),
+    const UserNotLoginPage(),
     Container(
       alignment: Alignment.center,
       color: Colors.pink.withOpacity(0.5),
