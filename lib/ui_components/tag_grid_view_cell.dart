@@ -10,7 +10,6 @@ class TagGridViewCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 162,
       height: 138,
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.all(8),
