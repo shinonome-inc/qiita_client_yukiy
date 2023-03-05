@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/tag_page.dart';
 
+import '../pages/settings_page.dart';
 import 'feed_page.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -14,20 +16,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   final _pages = <Widget>[
     const FeedPage(),
-    Container(
-      alignment: Alignment.center,
-      child: const Text('タグ'),
-    ),
+    TagPage(),
     Container(
       alignment: Alignment.center,
       color: Colors.lightBlue,
       child: const Text('マイページ'),
     ),
-    Container(
-      alignment: Alignment.center,
-      color: Colors.pink.withOpacity(0.5),
-      child: const Text('設定'),
-    ),
+    const SettingsPage(),
   ];
 
   void _onTapItem(int index) {

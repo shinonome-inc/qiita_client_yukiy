@@ -5,9 +5,15 @@ import 'package:qiita_client_yukiy/models/article.dart';
 import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
+  const ArticleListView(
+      {Key? key,
+      required this.articles,
+      required this.scrollController,
+      required this.itemCount})
+      : super(key: key);
+  final ScrollController scrollController;
   final List<Article> articles;
-  ArticleListView({Key? key, required this.articles}) : super(key: key);
-  double? _deviceWidth, _deviceHeight;
+  final int itemCount;
 
   String subtitle(Article article) {
     final dateTime = DateTime.parse(article.dateTime);
@@ -18,12 +24,14 @@ class ArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _deviceWidth = MediaQuery.of(context).size.width;
-    _deviceHeight = MediaQuery.of(context).size.height;
-
+    double? deviceHeight = MediaQuery.of(context).size.height;
     return ListView.separated(
-      itemCount: articles.length,
+      controller: scrollController,
+      itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
+        if (index == articles.length) {
+          return _loadingView();
+        }
         final article = articles[index];
         return ListTile(
           leading: CachedNetworkImage(
@@ -58,7 +66,7 @@ class ArticleListView extends StatelessWidget {
               isScrollControlled: true,
               builder: (BuildContext context) {
                 return SizedBox(
-                  height: _deviceHeight! * 0.9,
+                  height: deviceHeight * 0.9,
                   child: ModalArticle(
                     url: article.url,
                   ),
@@ -72,6 +80,23 @@ class ArticleListView extends StatelessWidget {
         color: Color.fromRGBO(178, 178, 178, 1),
         thickness: 0.5,
         indent: 62,
+      ),
+    );
+  }
+
+  Widget _loadingView() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            CircularProgressIndicator(),
+            SizedBox(
+              height: 8,
+            )
+          ],
+        ),
       ),
     );
   }
