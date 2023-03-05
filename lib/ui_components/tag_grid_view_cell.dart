@@ -21,7 +21,6 @@ class TagGridViewCell extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flexible(
             child: Center(
@@ -34,38 +33,28 @@ class TagGridViewCell extends StatelessWidget {
             child: Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      tag.id!,
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                      maxLines: 1,
-                    ),
+                  Text(
+                    tag.id!,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w500),
+                    maxLines: 1,
                   ),
                   Container(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "記事件数: ${tag.itemsCount}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF828282),
-                        ),
+                    child: Text(
+                      "記事件数: ${tag.itemsCount}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF828282),
                       ),
                     ),
                   ),
                   Container(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "フォロワー数: ${tag.followersCount}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF828282),
-                        ),
+                    child: Text(
+                      "フォロワー数: ${tag.followersCount}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF828282),
                       ),
                     ),
                   )
