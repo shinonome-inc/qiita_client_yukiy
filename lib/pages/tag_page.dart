@@ -36,10 +36,11 @@ class _TagPageState extends State<TagPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const UpperBar(
+      appBar: UpperBar(
         showSearchBar: false,
         appBarText: 'Tags',
-        textField: TextField(),
+        textField: const TextField(),
+        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<List<Tag>>(
         future: QiitaClient.fetchTags(pageNumber),

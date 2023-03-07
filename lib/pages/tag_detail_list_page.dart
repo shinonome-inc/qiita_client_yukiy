@@ -7,7 +7,7 @@ import '../services/qiita_client.dart';
 
 class TagDetailListPage extends StatefulWidget {
   const TagDetailListPage({Key? key, required this.tagName}) : super(key: key);
-  final String tagName;
+  final String? tagName;
 
   @override
   State<TagDetailListPage> createState() => _TagDetailListPageState();
@@ -23,7 +23,7 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    futureArticles = QiitaClient.fetchTagDetail(widget.tagName);
+    futureArticles = QiitaClient.fetchTagDetail(widget.tagName!);
     super.initState();
   }
 
@@ -31,8 +31,9 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: UpperBar(
-        appBarText: widget.tagName,
+        appBarText: widget.tagName!,
         textField: const TextField(),
+        automaticallyImplyLeading: true,
       ),
       body: Center(
         child: FutureBuilder<List<Article>>(
