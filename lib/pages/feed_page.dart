@@ -101,6 +101,7 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: FutureBuilder<List<Article>>(

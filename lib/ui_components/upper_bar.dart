@@ -6,15 +6,17 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size(375, showSearchBar ? 114 : kToolbarHeight);
   final Widget textField;
 
-  const UpperBar({
+  UpperBar({
     Key? key,
     this.showSearchBar = false,
     required this.appBarText,
     required this.textField,
+    required this.automaticallyImplyLeading,
   }) : super(key: key);
 
   final bool showSearchBar;
   final String appBarText;
+  bool automaticallyImplyLeading = false;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -27,12 +29,13 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
           fontFamily: 'Pacifico-Regular',
         ),
       ),
+      iconTheme: const IconThemeData(color: Color(0xFF468300)),
       bottom: showSearchBar
           ? SearchBar(
               textField: textField,
             )
           : null,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: automaticallyImplyLeading,
     );
   }
 }
