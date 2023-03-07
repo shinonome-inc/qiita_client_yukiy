@@ -15,10 +15,15 @@ class TagDetailListPage extends StatefulWidget {
 
 class _TagDetailListPageState extends State<TagDetailListPage> {
   List<Article> listArticle = [];
-  late Future<List<Article>> futureArticles;
+  Future<List<Article>>? futureArticles;
+  late ScrollController _scrollController;
+  late final bool _isLoading = true;
+  int pageNumber = 1;
+
   @override
   void initState() {
-    futureArticles = QiitaClient.fetchTag(widget.tagName);
+    _scrollController = ScrollController();
+    futureArticles = QiitaClient.fetchTagDetail(widget.tagName);
     super.initState();
   }
 
@@ -35,7 +40,12 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               listArticle = snapshot.data!;
-              return ArticleListView(articles: listArticle);
+              return ArticleListView(
+                articles: listArticle,
+                scrollController: _scrollController,
+                itemCount:
+                    _isLoading ? listArticle.length + 1 : listArticle.length,
+              );
             } else if (snapshot.hasError) {
               return const Icon(
                 Icons.error_outline,
@@ -43,7 +53,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
                 size: 60,
               );
             }
-            print(snapshot.error);
             return const CircularProgressIndicator();
           },
         ),

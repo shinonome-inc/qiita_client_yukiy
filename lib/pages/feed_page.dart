@@ -29,7 +29,7 @@ class _FeedPageState extends State<FeedPage> {
 
   Future<void> _fetchData() async {
     print("fetched");
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     print('pageNumber is $pageNumber');
     _isLoading = false;
     futureArticles = QiitaClient.fetchArticle("", pageNumber);
