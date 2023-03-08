@@ -4,6 +4,7 @@ import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 import '../models/article.dart';
 import '../services/qiita_client.dart';
+import '../ui_components/grey_article_part.dart';
 
 class TagDetailListPage extends StatefulWidget {
   const TagDetailListPage({Key? key, required this.tagName}) : super(key: key);
@@ -19,6 +20,8 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   late ScrollController _scrollController;
   late final bool _isLoading = true;
   int pageNumber = 1;
+  double screenHeight = 0;
+  double screenWidth = 0;
 
   @override
   void initState() {
@@ -29,6 +32,9 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: UpperBar(
         appBarText: widget.tagName!,
@@ -41,11 +47,21 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               listArticle = snapshot.data!;
-              return ArticleListView(
-                articles: listArticle,
-                scrollController: _scrollController,
-                itemCount:
-                    _isLoading ? listArticle.length + 1 : listArticle.length,
+              return ListView(
+                children: [
+                  SingleChildScrollView(child: GreyArticlePart()),
+                  SizedBox(
+                    height: screenHeight,
+                    width: screenWidth,
+                    child: ArticleListView(
+                      articles: listArticle,
+                      scrollController: _scrollController,
+                      itemCount: _isLoading
+                          ? listArticle.length + 1
+                          : listArticle.length,
+                    ),
+                  ),
+                ],
               );
             } else if (snapshot.hasError) {
               return const Icon(
