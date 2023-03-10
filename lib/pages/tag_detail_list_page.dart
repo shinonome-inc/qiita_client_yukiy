@@ -15,10 +15,10 @@ class TagDetailListPage extends StatefulWidget {
 }
 
 class _TagDetailListPageState extends State<TagDetailListPage> {
-  List<Article> listArticle = [];
-  Future<List<Article>>? futureArticles;
+  List<Article> listTagDetail = [];
+  Future<List<Article>>? futureTagDetails;
   late ScrollController _scrollController;
-  late final bool _isLoading = true;
+  late bool _isLoading = true;
   int pageNumber = 1;
   double screenHeight = 0;
   double screenWidth = 0;
@@ -26,8 +26,43 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    futureArticles = QiitaClient.fetchTagDetail(widget.tagName!);
+    _scrollController.addListener(_scrollListener);
+    _fetchTagData();
     super.initState();
+  }
+
+  Future<void> _fetchTagData() async {
+    print("TagFetched");
+    await Future.delayed(const Duration(seconds: 1));
+    print('TagPageNumber is $pageNumber');
+    _isLoading = false;
+    futureTagDetails = QiitaClient.fetchTagDetail(widget.tagName!, pageNumber);
+    listTagDetail.addAll(await futureTagDetails!);
+    print('タグ表示件数: ${listTagDetail.length}');
+
+    if (mounted) {
+      setState(
+        () {
+          if (listTagDetail.isNotEmpty) {
+            pageNumber++;
+          }
+        },
+      );
+    }
+  }
+
+  void _scrollListener() async {
+    double positionRate =
+        _scrollController.offset / _scrollController.position.maxScrollExtent;
+    const double threshold = 0.8;
+    if (positionRate > threshold && !_isLoading) {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+      await _fetchTagData();
+    }
   }
 
   @override
@@ -43,22 +78,22 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
       ),
       body: Center(
         child: FutureBuilder<List<Article>>(
-          future: futureArticles,
+          future: futureTagDetails,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              listArticle = snapshot.data!;
+              listTagDetail = snapshot.data!;
               return ListView(
                 children: [
-                  SingleChildScrollView(child: GreyArticlePart()),
+                  GreyArticlePart(),
                   SizedBox(
                     height: screenHeight,
                     width: screenWidth,
                     child: ArticleListView(
-                      articles: listArticle,
+                      articles: listTagDetail,
                       scrollController: _scrollController,
                       itemCount: _isLoading
-                          ? listArticle.length + 1
-                          : listArticle.length,
+                          ? listTagDetail.length + 1
+                          : listTagDetail.length,
                     ),
                   ),
                 ],
