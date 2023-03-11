@@ -19,8 +19,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   late ScrollController _scrollController;
   late bool _isLoading = true;
   int pageNumber = 1;
-  double screenHeight = 0;
-  double screenWidth = 0;
 
   @override
   void initState() {
@@ -54,9 +52,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: UpperBar(
         appBarText: widget.tagName!,
