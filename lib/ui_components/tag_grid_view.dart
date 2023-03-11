@@ -8,10 +8,12 @@ class TagGridView extends StatelessWidget {
     Key? key,
     required this.itemCount,
     required this.tagList,
+    required this.scrollController,
   }) : super(key: key);
 
   final int itemCount;
   final List<Tag> tagList;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class TagGridView extends StatelessWidget {
     double columnWidth = 170;
     int columnCount = deviceSize.width ~/ columnWidth;
     return GridView.builder(
+      controller: scrollController,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         // 横1行あたりに表示するWidgetの数
         crossAxisCount: columnCount,
