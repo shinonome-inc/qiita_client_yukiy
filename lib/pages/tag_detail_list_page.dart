@@ -4,7 +4,6 @@ import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 import '../models/article.dart';
 import '../services/qiita_client.dart';
-import '../ui_components/grey_article_part.dart';
 
 class TagDetailListPage extends StatefulWidget {
   const TagDetailListPage({Key? key, required this.tagName}) : super(key: key);
@@ -32,12 +31,12 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
   }
 
   Future<void> _fetchTagData() async {
-    print("TagFetched");
-    await Future.delayed(const Duration(seconds: 1));
-    print('TagPageNumber is $pageNumber');
-    _isLoading = false;
+    _isLoading = true;
     futureTagDetails = QiitaClient.fetchTagDetail(widget.tagName!, pageNumber);
+    await Future.delayed(const Duration(seconds: 1));
     listTagDetail.addAll(await futureTagDetails!);
+    print("TagFetched");
+    print('TagPageNumber is $pageNumber');
     print('タグ表示件数: ${listTagDetail.length}');
 
     if (mounted) {
@@ -84,7 +83,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
               listTagDetail = snapshot.data!;
               return ListView(
                 children: [
-                  GreyArticlePart(),
                   SizedBox(
                     height: screenHeight,
                     width: screenWidth,
