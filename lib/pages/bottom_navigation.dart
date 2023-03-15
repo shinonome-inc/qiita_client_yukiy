@@ -19,7 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       alignment: Alignment.center,
       child: const Text('タグ'),
     ),
-    const UserNotLoginPage(),
+    UserNotLoginPage(),
     Container(
       alignment: Alignment.center,
       color: Colors.pink.withOpacity(0.5),
