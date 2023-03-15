@@ -71,3 +71,17 @@ class TagGridViewCell extends StatelessWidget {
     );
   }
 }
+
+Widget _loadingView() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        CircularProgressIndicator(),
+        SizedBox(
+          height: 8,
+        )
+      ],
+    ),
+  );
+}
