@@ -1,12 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../models/tag.dart';
 import '../pages/tag_detail_list_page.dart';
 
 class TagGridViewCell extends StatelessWidget {
-  const TagGridViewCell({Key? key, required this.tag}) : super(key: key);
+  TagGridViewCell({Key? key, required this.tag}) : super(key: key);
 
   final Tag tag;
+  static String defaultIconImage =
+      "https://cdn.qiita.com/assets/public/icon-missing_tag-63d8678a29c9158bc7ccea1c4c8e7114.png";
+  // late String tagIconUrl = tag.iconUrl.toString();
+  //
+  // defaultTagIcon(Tag tag) {
+  //   if (tagIconUrl.isEmpty) {
+  //     tagIconUrl = defaultIconImage.toString();
+  //     return Image.network(tagIconUrl);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +44,11 @@ class TagGridViewCell extends StatelessWidget {
           children: [
             Flexible(
               child: Center(
-                child: Image.network(
-                  tag.iconUrl.toString(),
+                child: CachedNetworkImage(
+                  imageUrl: tag.iconUrl.toString(),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/images/icon-missing_tag.png',
+                  ),
                 ),
               ),
             ),
@@ -70,18 +84,4 @@ class TagGridViewCell extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _loadingView() {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        CircularProgressIndicator(),
-        SizedBox(
-          height: 8,
-        )
-      ],
-    ),
-  );
 }
