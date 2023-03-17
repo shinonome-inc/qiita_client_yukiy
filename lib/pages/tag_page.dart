@@ -69,13 +69,13 @@ class _TagPageState extends State<TagPage> {
                 _isLoading) {
               _isLoading = false;
               pageNumber += 1;
-              listTags.addAll(snapshot.data!);
+              listTags.addAll(snapshot.data ?? []);
               print('タグ件数: ${listTags.length}');
             }
             if (snapshot.hasData) {
               return TagGridView(
                 tagList: listTags,
-                itemCount: _isLoading ? listTags.length + 1 : listTags.length,
+                itemCount: listTags.length,
                 scrollController: _scrollController,
               );
             } else if (snapshot.hasError) {
@@ -88,7 +88,7 @@ class _TagPageState extends State<TagPage> {
               );
             }
             print(snapshot.error);
-            return const Center(child: CircularProgressIndicator());
+            return const CircularProgressIndicator();
           },
         ),
       ),
