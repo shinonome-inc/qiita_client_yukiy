@@ -20,11 +20,10 @@ class UserNotLoginPage extends StatelessWidget {
       ),
       body: SizedBox(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: 6),
+              margin: EdgeInsets.only(top: screenHeight / 4, bottom: 6),
               child: const Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -55,7 +54,7 @@ class UserNotLoginPage extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 247),
+              margin: EdgeInsets.only(top: screenHeight / 3),
               child: ThinLongRoundedButton(
                 text: 'ログインする',
                 backgroundColor: const Color(0xFF74C13A),
