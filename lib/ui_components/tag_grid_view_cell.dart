@@ -10,14 +10,6 @@ class TagGridViewCell extends StatelessWidget {
   final Tag tag;
   static String defaultIconImage =
       "https://cdn.qiita.com/assets/public/icon-missing_tag-63d8678a29c9158bc7ccea1c4c8e7114.png";
-  // late String tagIconUrl = tag.iconUrl.toString();
-  //
-  // defaultTagIcon(Tag tag) {
-  //   if (tagIconUrl.isEmpty) {
-  //     tagIconUrl = defaultIconImage.toString();
-  //     return Image.network(tagIconUrl);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
