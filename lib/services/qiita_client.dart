@@ -26,6 +26,7 @@ class QiitaClient {
   }
 
   static Future<List<Tag>> fetchTags(int pageNumber) async {
+    //タグ一覧
     String url =
         'https://qiita.com/api/v2/tags?page=$pageNumber&per_page=20&sort=count';
 
@@ -38,6 +39,22 @@ class QiitaClient {
       throw Exception(
         'Request failed with status: ${response.statusCode}${response.body}',
       );
+    }
+  }
+
+  static Future<List<Article>> fetchTagDetail(
+      String tagName, int pageNumber) async {
+    //タグ詳細
+    String url =
+        'https://qiita.com//api/v2/tags/$tagName/items?page=$pageNumber&per_page=20';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final tagDetailList =
+          jsonArray.map((json) => Article.fromJson(json)).toList();
+      return tagDetailList;
+    } else {
+      throw Exception('Request failed with status: ${response.statusCode}');
     }
   }
 }
