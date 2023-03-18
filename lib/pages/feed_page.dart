@@ -18,6 +18,7 @@ class _FeedPageState extends State<FeedPage> {
   late ScrollController _scrollController;
   late bool _isLoading = true;
   int pageNumber = 1;
+  bool showGreyPart = false;
 
   @override
   void initState() {

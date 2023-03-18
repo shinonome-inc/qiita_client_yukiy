@@ -6,15 +6,17 @@ import 'package:qiita_client_yukiy/ui_components/grey_article_part.dart';
 import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
-  const ArticleListView(
+  ArticleListView(
       {Key? key,
       required this.articles,
       required this.scrollController,
-      required this.itemCount})
+      required this.itemCount,
+      this.showGreyPart = false})
       : super(key: key);
   final ScrollController scrollController;
   final List<Article> articles;
   final int itemCount;
+  final bool showGreyPart;
 
   String subtitle(Article article) {
     final dateTime = DateTime.parse(article.dateTime);
@@ -37,7 +39,7 @@ class ArticleListView extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              GreyArticlePart(),
+              if (showGreyPart) GreyArticlePart(),
               listTile(article, context),
             ],
           );

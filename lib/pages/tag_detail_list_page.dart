@@ -71,12 +71,12 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
             }
             if (snapshot.hasData) {
               return ArticleListView(
-                articles: listTagDetail,
-                scrollController: _scrollController,
-                itemCount: _isLoading
-                    ? listTagDetail.length + 1
-                    : listTagDetail.length,
-              );
+                  articles: listTagDetail,
+                  scrollController: _scrollController,
+                  itemCount: _isLoading
+                      ? listTagDetail.length + 1
+                      : listTagDetail.length,
+                  showGreyPart: true);
             } else if (snapshot.hasError) {
               return const Icon(
                 Icons.error_outline,
