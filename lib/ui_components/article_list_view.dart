@@ -109,6 +109,7 @@ class ArticleListView extends StatelessWidget {
               height: deviceHeight * 0.9,
               child: ModalArticle(
                 url: article.url,
+                text: 'article',
               ),
             );
           },
