@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/pages/bottom_navigation.dart';
+import 'package:qiita_client_yukiy/services/qiita_client.dart';
+import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 import 'package:qiita_client_yukiy/ui_components/thin_long_rounded_button.dart';
 
 class TopPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class TopPage extends StatefulWidget {
 class _TopPageState extends State<TopPage> {
   @override
   Widget build(BuildContext context) {
+    double? deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -61,7 +64,20 @@ class _TopPageState extends State<TopPage> {
               ThinLongRoundedButton(
                 text: 'ログイン',
                 backgroundColor: const Color(0xFF468300),
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                        height: deviceHeight * 0.9,
+                        child: ModalArticle(
+                            url: QiitaClient.fetchLogin(), text: "Qiita Auth"),
+                      );
+                    },
+                  );
+                },
               ),
               ThinLongRoundedButton(
                 text: 'ログインせずに利用する',

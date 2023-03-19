@@ -45,7 +45,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
           child: SizedBox(
             height: _webViewHeight,
             child: WebView(
-              initialUrl: widget.url,
+              initialUrl: Uri.parse(widget.url).toString(),
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (controller) async {
                 _webViewController = controller;
