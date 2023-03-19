@@ -61,6 +61,11 @@ class _TopPageState extends State<TopPage> {
               ThinLongRoundedButton(
                 text: 'ログイン',
                 backgroundColor: const Color(0xFF468300),
+                onPressed: () {},
+              ),
+              ThinLongRoundedButton(
+                text: 'ログインせずに利用する',
+                backgroundColor: Colors.transparent,
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -68,11 +73,6 @@ class _TopPageState extends State<TopPage> {
                         builder: (context) => const BottomNavigation()),
                   );
                 },
-              ),
-              ThinLongRoundedButton(
-                text: 'ログインせずに利用する',
-                backgroundColor: Colors.transparent,
-                onPressed: () {},
               ),
               const SizedBox(
                 height: 81,
