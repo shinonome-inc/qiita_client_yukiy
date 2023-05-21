@@ -41,87 +41,91 @@ class _TopPageState extends State<TopPage> {
   @override
   Widget build(BuildContext context) {
     double? deviceHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/background.png'),
-                fit: BoxFit.fill,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.1),
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/background.png'),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.2),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 220,
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  'Qiita Feed App',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontFamily: 'Pacifico-Regular',
+            Container(
+              color: Colors.black.withOpacity(0.2),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(
+                  height: 220,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Qiita Feed App',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontFamily: 'Pacifico-Regular',
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  '-PlayGround-',
-                  style: TextStyle(
-                    letterSpacing: 0.25,
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  alignment: Alignment.center,
+                  child: const Text(
+                    '-PlayGround-',
+                    style: TextStyle(
+                      letterSpacing: 0.25,
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              const Spacer(),
-              ThinLongRoundedButton(
-                text: 'ログイン',
-                backgroundColor: const Color(0xFF468300),
-                onPressed: () {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                        height: deviceHeight * 0.9,
-                        child: ModalArticle(
-                            url: QiitaClient.fetchLogin(), text: "Qiita Auth"),
-                      );
-                    },
-                  );
-                },
-              ),
-              ThinLongRoundedButton(
-                text: 'ログインせずに利用する',
-                backgroundColor: Colors.transparent,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BottomNavigation()),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 81,
-              )
-            ],
-          ),
-        ],
+                const Spacer(),
+                ThinLongRoundedButton(
+                  text: 'ログイン',
+                  backgroundColor: const Color(0xFF468300),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return SizedBox(
+                          height: deviceHeight * 0.9,
+                          child: ModalArticle(
+                              url: QiitaClient.fetchLogin(),
+                              text: "Qiita Auth"),
+                        );
+                      },
+                    );
+                  },
+                ),
+                ThinLongRoundedButton(
+                  text: 'ログインせずに利用する',
+                  backgroundColor: Colors.transparent,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNavigation()),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 81,
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
