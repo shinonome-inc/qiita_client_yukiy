@@ -1,18 +1,53 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/article.dart';
 import '../models/tag.dart';
 
 class QiitaClient {
+  static final clientID = dotenv.env['CLIENTID'];
+  static final clientSecret = dotenv.env['CLIENTSECRET'];
+  static final keyAccessToken = dotenv.env['QIITA_ACCESS_TOKEN'];
+
+  static String createAuthorizeUrl() {
+    const scope = 'read_qiita%20write_qiita';
+    String url =
+        'https://qiita.com/api/v2/oauth/authorize?client_id=$clientID&scope=$scope';
+    return url;
+  }
+
+  static Future<String> fetchAccessToken(String code) async {
+    final response = await http.post(
+      Uri.parse('https://qiita.com/api/v2/access_tokens'),
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: jsonEncode(
+        {
+          'client_id': clientID,
+          'client_secret': clientSecret,
+          'code': code,
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      final body = jsonDecode(response.body);
+      final accessToken = body['token'];
+      return accessToken;
+    } else {
+      throw Exception('Request failed with status:${response.statusCode}');
+    }
+  }
+
   static Future<List<Article>> fetchArticle(
       String searchValue, int pageNumber) async {
     String url =
         'https://qiita.com/api/v2/items?page=$pageNumber&query=title%3A$searchValue';
-    final authorization = {
-      "Authorization": "Bearer defd822a3e7702cac78d66eefe2ed5c8d174e202"
-    };
+    final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
+
+    final authorization = {"Authorization": "Bearer $token"};
     final response = await http.get(Uri.parse(url), headers: authorization);
     if (response.statusCode == 200) {
       final List<dynamic> jsonArray = json.decode(response.body);

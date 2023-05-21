@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/top_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -50,7 +51,28 @@ class _WebViewScreenState extends State<WebViewScreen> {
               onWebViewCreated: (controller) async {
                 _webViewController = controller;
               },
-              onPageFinished: (String url) => _onPageFinished(context, url),
+              onPageFinished: (String url) {
+                Uri uri;
+                uri = Uri.parse(url);
+                _onPageFinished(context, url);
+                print(url);
+                if (url.contains(
+                    'https://qiita.com/settings/applications?code=')) {
+                  String? code = uri.queryParameters['code'];
+                  print(uri.queryParameters['code']);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => WillPopScope(
+                        onWillPop: () async => false,
+                        child: TopPage(
+                          code: code,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
           ),
         );

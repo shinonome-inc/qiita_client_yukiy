@@ -5,13 +5,39 @@ import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 import 'package:qiita_client_yukiy/ui_components/thin_long_rounded_button.dart';
 
 class TopPage extends StatefulWidget {
-  const TopPage({Key? key}) : super(key: key);
+  const TopPage({Key? key, this.code}) : super(key: key);
+  final String? code;
 
   @override
   State<TopPage> createState() => _TopPageState();
 }
 
 class _TopPageState extends State<TopPage> {
+  String? accessToken = '';
+  bool isLoading = false;
+
+  Future<void> login() async {
+    isLoading = true;
+    accessToken = await QiitaClient.fetchAccessToken(widget.code!);
+    print(accessToken);
+    if (!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BottomNavigation(),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.code != null) {
+      login();
+    }
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double? deviceHeight = MediaQuery.of(context).size.height;
