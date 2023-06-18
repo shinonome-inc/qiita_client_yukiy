@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/my_page.dart';
 import 'package:qiita_client_yukiy/pages/tag_page.dart';
-import 'package:qiita_client_yukiy/pages/user_not_login_page.dart';
 
 import '../pages/settings_page.dart';
 import 'feed_page.dart';
@@ -17,8 +17,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   final _pages = <Widget>[
     const FeedPage(),
-    TagPage(),
-    UserNotLoginPage(),
+    const TagPage(),
+    const MyPage(),
     const SettingsPage(),
   ];
 

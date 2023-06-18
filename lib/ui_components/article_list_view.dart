@@ -6,7 +6,7 @@ import 'package:qiita_client_yukiy/ui_components/grey_article_part.dart';
 import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
-  ArticleListView(
+  const ArticleListView(
       {Key? key,
       required this.articles,
       required this.scrollController,

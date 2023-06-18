@@ -7,6 +7,7 @@ import '../ui_components/thin_long_rounded_button.dart';
 class UserNotLoginPage extends StatelessWidget {
   UserNotLoginPage({Key? key}) : super(key: key);
   late double screenHeight = 0;
+  bool getAccessToken = true;
 
   @override
   Widget build(BuildContext context) {

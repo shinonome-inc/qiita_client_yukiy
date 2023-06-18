@@ -19,6 +19,7 @@ class _TopPageState extends State<TopPage> {
   Future<void> login() async {
     isLoading = true;
     accessToken = await QiitaClient.fetchAccessToken(widget.code!);
+    await QiitaClient.saveAccessToken(accessToken!);
     print(accessToken);
     if (!mounted) return;
     Navigator.push(
