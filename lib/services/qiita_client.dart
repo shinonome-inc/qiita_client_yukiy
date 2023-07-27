@@ -129,13 +129,29 @@ class QiitaClient {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonArray = json.decode(response.body);
-      final fetchAuthenticated = AuthenticatedUser.fromJson(jsonArray);
-
       print(response.statusCode);
-      return fetchAuthenticated;
+      return AuthenticatedUser.fromJson(json.decode(response.body));
     } else {
       throw Exception('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<Article>> fetchAuthenticatedArticle(int pageNumber) async {
+    String url =
+        'https://qiita.com/api/v2/authenticated_user/items?page=$pageNumber&per_page=20';
+    final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
+
+    final authorization = {"Authorization": "Bearer $token"};
+    final response = await http.get(Uri.parse(url), headers: authorization);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final authenticatedArticleList =
+          jsonArray.map((json) => Article.fromJson(json)).toList();
+      return authenticatedArticleList;
+    } else {
+      throw Exception(
+        'Request failed with status: ${response.statusCode}${response.body}',
+      );
     }
   }
 

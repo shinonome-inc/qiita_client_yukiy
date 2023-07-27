@@ -12,21 +12,27 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  bool isLogin = true;
+  bool? isLogin;
 
   @override
   void initState() {
-    Future(() async {
+    Future.delayed(Duration.zero, () async {
       isLogin = await QiitaClient.switchPage();
+      setState(() {}); // isLoginの値が更新されたことを反映するためにsetStateを呼び出す
     });
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: isLogin ? const UserPage() : UserNotLoginPage(),
-      ),
-    );
+    if (isLogin == null) {
+      // isLoginがnullの場合はローディングなどを表示するウィジェットを返す
+      return const CircularProgressIndicator();
+    } else {
+      return MaterialApp(
+        home: Scaffold(
+          body: isLogin! ? const UserPage() : UserNotLoginPage(),
+        ),
+      );
+    }
   }
 }

@@ -55,12 +55,12 @@ class ArticleListView extends StatelessWidget {
   }
 
   Widget _loadingView() {
-    return Center(
+    return const Center(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             CircularProgressIndicator(),
             SizedBox(
               height: 8,
