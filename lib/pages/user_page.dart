@@ -129,6 +129,7 @@ class _UserPageState extends State<UserPage> {
                               itemCount: _isLoading
                                   ? listArticle.length + 1
                                   : listArticle.length,
+                              showImage: false,
                             ),
                           );
                         },

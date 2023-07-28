@@ -21,23 +21,6 @@ class MyPageIntroduction extends StatelessWidget {
     );
   }
 }
-//
-// Widget _loadingView() {
-//   return const Center(
-//     child: Padding(
-//       padding: EdgeInsets.all(8.0),
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           CircularProgressIndicator(),
-//           SizedBox(
-//             height: 8,
-//           )
-//         ],
-//       ),
-//     ),
-//   );
-// }
 
 Widget myIntroduction(
     AuthenticatedUser authenticatedUser, BuildContext context) {
