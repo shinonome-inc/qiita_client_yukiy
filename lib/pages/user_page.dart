@@ -138,7 +138,7 @@ class _UserPageState extends State<UserPage> {
                     );
                   }
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return Container();
                 }
               },
             ),
