@@ -28,11 +28,7 @@ class _MyPageState extends State<MyPage> {
       // isLoginがnullの場合はローディングなどを表示するウィジェットを返す
       return const CircularProgressIndicator();
     } else {
-      return MaterialApp(
-        home: Scaffold(
-          body: isLogin! ? const UserPage() : UserNotLoginPage(),
-        ),
-      );
+      return isLogin! ? const UserPage() : UserNotLoginPage();
     }
   }
 }

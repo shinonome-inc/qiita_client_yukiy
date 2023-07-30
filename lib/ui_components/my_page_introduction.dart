@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/models/authenticated_user.dart';
 
+import 'grey_article_part.dart';
+
 class MyPageIntroduction extends StatelessWidget {
   const MyPageIntroduction(
       {Key? key,
@@ -25,6 +27,7 @@ class MyPageIntroduction extends StatelessWidget {
 Widget myIntroduction(
     AuthenticatedUser authenticatedUser, BuildContext context) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
         margin: const EdgeInsets.all(24),
@@ -84,6 +87,7 @@ Widget myIntroduction(
           ],
         ),
       ),
+      GreyArticlePart(),
     ],
   );
 }

@@ -29,7 +29,7 @@ class ArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       controller: scrollController,
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
@@ -43,16 +43,27 @@ class ArticleListView extends StatelessWidget {
             children: [
               if (showGreyPart) GreyArticlePart(),
               listTile(article, context, showImage: showImage),
+              const Divider(
+                color: Color.fromRGBO(178, 178, 178, 1),
+                thickness: 0.5,
+                height: 8,
+                indent: 20,
+              ),
             ],
           );
         }
-        return listTile(article, context, showImage: showImage);
+        return Column(
+          children: [
+            listTile(article, context, showImage: showImage),
+            const Divider(
+              color: Color.fromRGBO(178, 178, 178, 1),
+              thickness: 0.5,
+              height: 8,
+              indent: 20,
+            ),
+          ],
+        );
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(
-        color: Color.fromRGBO(178, 178, 178, 1),
-        thickness: 0.5,
-        indent: 20,
-      ),
     );
   }
 

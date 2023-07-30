@@ -5,7 +5,6 @@ import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 import '../models/article.dart';
 import '../services/qiita_client.dart';
 import '../ui_components/article_list_view.dart';
-import '../ui_components/grey_article_part.dart';
 import '../ui_components/my_page_introduction.dart';
 
 class UserPage extends StatefulWidget {
@@ -78,71 +77,73 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: UpperBar(
-          appBarText: 'MyPage',
-          textField: const TextField(),
-          automaticallyImplyLeading: false,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FutureBuilder<AuthenticatedUser>(
-              future: futureAuthentication,
-              builder: (BuildContext context,
-                  AsyncSnapshot<AuthenticatedUser> snapshot) {
-                if (snapshot.hasData) {
-                  return myIntroduction(snapshot.data!, context);
-                } else if (snapshot.hasError) {
-                  return const Text("受け取れてないっすわ");
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: UpperBar(
+        appBarText: 'MyPage',
+        textField: const TextField(),
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FutureBuilder<AuthenticatedUser>(
+            future: futureAuthentication,
+            builder: (BuildContext context,
+                AsyncSnapshot<AuthenticatedUser> snapshot) {
+              if (snapshot.hasData) {
+                return myIntroduction(snapshot.data!, context);
+              } else if (snapshot.hasError) {
+                return const Text("受け取れてないっすわ");
+              }
+              return const SizedBox(
+                height: 223,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+          ),
+          Expanded(
+            child: FutureBuilder<List<Article>>(
+              future: futureArticles,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  print("Error is: ${snapshot.error}");
+                  return const Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  );
+                } else if (snapshot.hasData) {
+                  if (listArticle.isEmpty) {
+                    return const Center(child: Text("記事がありません"));
+                  } else {
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        print("👀 ${constraints.minHeight}");
+                        print("👀 ${constraints.maxHeight}");
+                        return SizedBox(
+                          height: constraints.minHeight,
+                          child: ArticleListView(
+                            articles: listArticle,
+                            scrollController: _scrollController,
+                            itemCount: _isLoading
+                                ? listArticle.length + 1
+                                : listArticle.length,
+                            showImage: false,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  return const Center(child: CircularProgressIndicator());
                 }
-                return const Center(child: CircularProgressIndicator());
               },
             ),
-            GreyArticlePart(),
-            Expanded(
-              child: FutureBuilder<List<Article>>(
-                future: futureArticles,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    print("Error is: ${snapshot.error}");
-                    return const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    );
-                  } else if (snapshot.hasData) {
-                    if (listArticle.isEmpty) {
-                      return const Center(child: Text("記事がありません"));
-                    } else {
-                      return LayoutBuilder(
-                        builder: (context, constraints) {
-                          print("👀 ${constraints.minHeight}");
-                          print("👀 ${constraints.maxHeight}");
-                          return SizedBox(
-                            height: constraints.minHeight,
-                            child: ArticleListView(
-                              articles: listArticle,
-                              scrollController: _scrollController,
-                              itemCount: _isLoading
-                                  ? listArticle.length + 1
-                                  : listArticle.length,
-                              showImage: false,
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
