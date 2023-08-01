@@ -19,12 +19,17 @@ class _FeedPageState extends State<FeedPage> {
   late bool _isLoading = true;
   int pageNumber = 1;
   bool showGreyPart = false;
+  bool? isLogin;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _fetchData();
+    Future.delayed(Duration.zero, () async {
+      isLogin = await QiitaClient.switchPage();
+      setState(() {}); // isLoginの値が更新されたことを反映するためにsetStateを呼び出す
+    });
     super.initState();
   }
 
@@ -62,8 +67,7 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget feedScreen() {
     return Scaffold(
       appBar: UpperBar(
         showSearchBar: true,
@@ -128,5 +132,12 @@ class _FeedPageState extends State<FeedPage> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return isLogin != null && isLogin!
+        ? WillPopScope(child: feedScreen(), onWillPop: () async => false)
+        : feedScreen();
   }
 }

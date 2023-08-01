@@ -20,12 +20,17 @@ class _TagPageState extends State<TagPage> {
   late bool _isLoading = true;
   late Future<List<Tag>> futureTags;
   late ScrollController _scrollController;
+  bool? isLogin;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _fetchTagData();
+    Future.delayed(Duration.zero, () async {
+      isLogin = await QiitaClient.switchPage();
+      setState(() {}); // isLoginの値が更新されたことを反映するためにsetStateを呼び出す
+    });
     super.initState();
   }
 
@@ -51,8 +56,7 @@ class _TagPageState extends State<TagPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget tagScreen() {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: UpperBar(
@@ -93,5 +97,12 @@ class _TagPageState extends State<TagPage> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return isLogin != null && isLogin!
+        ? WillPopScope(child: tagScreen(), onWillPop: () async => false)
+        : tagScreen();
   }
 }

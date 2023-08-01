@@ -77,73 +77,76 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: UpperBar(
-        appBarText: 'MyPage',
-        textField: const TextField(),
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          FutureBuilder<AuthenticatedUser>(
-            future: futureAuthentication,
-            builder: (BuildContext context,
-                AsyncSnapshot<AuthenticatedUser> snapshot) {
-              if (snapshot.hasData) {
-                return myIntroduction(snapshot.data!, context);
-              } else if (snapshot.hasError) {
-                return const Text("受け取れてないっすわ");
-              }
-              return const SizedBox(
-                height: 223,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
-          ),
-          Expanded(
-            child: FutureBuilder<List<Article>>(
-              future: futureArticles,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  print("Error is: ${snapshot.error}");
-                  return const Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  );
-                } else if (snapshot.hasData) {
-                  if (listArticle.isEmpty) {
-                    return const Center(child: Text("記事がありません"));
-                  } else {
-                    return LayoutBuilder(
-                      builder: (context, constraints) {
-                        print("👀 ${constraints.minHeight}");
-                        print("👀 ${constraints.maxHeight}");
-                        return SizedBox(
-                          height: constraints.minHeight,
-                          child: ArticleListView(
-                            articles: listArticle,
-                            scrollController: _scrollController,
-                            itemCount: _isLoading
-                                ? listArticle.length + 1
-                                : listArticle.length,
-                            showImage: false,
-                          ),
-                        );
-                      },
-                    );
-                  }
-                } else {
-                  return Container();
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: UpperBar(
+          appBarText: 'MyPage',
+          textField: const TextField(),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FutureBuilder<AuthenticatedUser>(
+              future: futureAuthentication,
+              builder: (BuildContext context,
+                  AsyncSnapshot<AuthenticatedUser> snapshot) {
+                if (snapshot.hasData) {
+                  return myIntroduction(snapshot.data!, context);
+                } else if (snapshot.hasError) {
+                  return const Text("受け取れてないっすわ");
                 }
+                return const SizedBox(
+                  height: 223,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               },
             ),
-          ),
-        ],
+            Expanded(
+              child: FutureBuilder<List<Article>>(
+                future: futureArticles,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    print("Error is: ${snapshot.error}");
+                    return const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    );
+                  } else if (snapshot.hasData) {
+                    if (listArticle.isEmpty) {
+                      return const Center(child: Text("記事がありません"));
+                    } else {
+                      return LayoutBuilder(
+                        builder: (context, constraints) {
+                          print("👀 ${constraints.minHeight}");
+                          print("👀 ${constraints.maxHeight}");
+                          return SizedBox(
+                            height: constraints.minHeight,
+                            child: ArticleListView(
+                              articles: listArticle,
+                              scrollController: _scrollController,
+                              itemCount: _isLoading
+                                  ? listArticle.length + 1
+                                  : listArticle.length,
+                              showImage: false,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

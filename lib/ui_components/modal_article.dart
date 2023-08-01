@@ -10,8 +10,6 @@ class ModalArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modalHeight = MediaQuery.of(context).size.height;
-    print('Modal height: $modalHeight');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
