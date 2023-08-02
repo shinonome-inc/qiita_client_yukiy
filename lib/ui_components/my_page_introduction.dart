@@ -65,7 +65,7 @@ Widget myIntroduction(
             Container(
               margin: const EdgeInsets.only(top: 4),
               child: Text(
-                authenticatedUser.id,
+                '@${authenticatedUser.id}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12,

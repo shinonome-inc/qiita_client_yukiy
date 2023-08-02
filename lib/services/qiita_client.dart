@@ -12,7 +12,6 @@ import '../models/tag.dart';
 class QiitaClient {
   static final clientID = dotenv.env['CLIENTID'];
   static final clientSecret = dotenv.env['CLIENTSECRET'];
-  static final keyAccessToken = dotenv.env['QIITA_ACCESS_TOKEN'];
 
   static String createAuthorizeUrl() {
     const scope = 'read_qiita%20write_qiita';
@@ -139,7 +138,7 @@ class QiitaClient {
   static Future<List<Article>> fetchAuthenticatedArticle(int pageNumber) async {
     String url =
         'https://qiita.com/api/v2/authenticated_user/items?page=$pageNumber&per_page=20';
-    final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
+    final String? token = await getAccessToken();
 
     final authorization = {"Authorization": "Bearer $token"};
     final response = await http.get(Uri.parse(url), headers: authorization);

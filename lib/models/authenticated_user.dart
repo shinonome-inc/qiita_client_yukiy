@@ -13,7 +13,7 @@ class AuthenticatedUser {
 
   factory AuthenticatedUser.fromJson(Map<String, dynamic> json) {
     return AuthenticatedUser(
-      description: json['description'],
+      description: json['description'] ?? '',
       id: json['id'],
       name: json['name'],
       profileImageUrl: json['profile_image_url'],
