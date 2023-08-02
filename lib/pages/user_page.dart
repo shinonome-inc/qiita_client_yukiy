@@ -96,7 +96,7 @@ class _UserPageState extends State<UserPage> {
                 if (snapshot.hasData) {
                   return myIntroduction(snapshot.data!, context);
                 } else if (snapshot.hasError) {
-                  return const Text("受け取れてないっすわ");
+                  return const Text("受け取れていません");
                 }
                 return const SizedBox(
                   height: 223,
