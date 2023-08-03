@@ -31,7 +31,7 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       iconTheme: const IconThemeData(color: Color(0xFF468300)),
       bottom: showSearchBar
-          ? SearchBar(
+          ? QiitaSearchBar(
               textField: textField,
             )
           : null,
