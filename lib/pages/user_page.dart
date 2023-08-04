@@ -10,10 +10,6 @@ import '../ui_components/my_page_introduction.dart';
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
 
-  String subtitle(Article article) {
-    return '@${article.user.id}}';
-  }
-
   @override
   State<UserPage> createState() => _UserPageState();
 }
