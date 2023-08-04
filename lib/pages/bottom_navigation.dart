@@ -17,7 +17,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   final _pages = <Widget>[
     const FeedPage(),
-    TagPage(),
+    const TagPage(),
     UserNotLoginPage(),
     const SettingsPage(),
   ];
