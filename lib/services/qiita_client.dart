@@ -113,7 +113,7 @@ class QiitaClient {
   static String fetchLogin() {
 //認証
     String url =
-        'https://qiita.com//api/v2/oauth/authorize?client_id=67b56264308408ab81df90f81184e680ffa26d48&scope=read_qiita+write_qiita&state=bb17785d811bb1913ef54b0a7657de780defaa2d';
+        'https://qiita.com//api/v2/oauth/authorize?client_id=$clientID&scope=read_qiita+write_qiita&state=bb17785d811bb1913ef54b0a7657de780defaa2d';
     return url;
   }
 
