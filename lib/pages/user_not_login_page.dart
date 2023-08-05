@@ -5,13 +5,11 @@ import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 import '../ui_components/thin_long_rounded_button.dart';
 
 class UserNotLoginPage extends StatelessWidget {
-  UserNotLoginPage({Key? key}) : super(key: key);
-  late double screenHeight = 0;
-  bool getAccessToken = true;
+  const UserNotLoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
