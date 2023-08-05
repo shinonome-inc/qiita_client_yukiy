@@ -95,7 +95,12 @@ class _TopPageState extends State<TopPage> {
                   backgroundColor: const Color(0xFF468300),
                   onPressed: () {
                     showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
+                      backgroundColor: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10.0),
+                        ),
+                      ),
                       context: context,
                       isScrollControlled: true,
                       builder: (BuildContext context) {
