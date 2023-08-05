@@ -26,9 +26,8 @@ class _FeedPageState extends State<FeedPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _fetchData();
-    Future.delayed(Duration.zero, () async {
+    Future(() async {
       isLogin = await QiitaClient.switchPage();
-      setState(() {}); // isLoginの値が更新されたことを反映するためにsetStateを呼び出す
     });
     super.initState();
   }

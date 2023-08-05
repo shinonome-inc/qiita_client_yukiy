@@ -52,18 +52,20 @@ class QiitaClient {
   //端末から取ってくる
   static Future<String?> getAccessToken() async {
     var prefs = await SharedPreferences.getInstance();
-    final String? apiKey = prefs.getString("api_key");
-    return apiKey;
+    final String? accessToken = prefs.getString("api_key");
+    return accessToken;
   }
 
   static Future<List<Article>> fetchArticle(
       String searchValue, int pageNumber) async {
     String url =
         'https://qiita.com/api/v2/items?page=$pageNumber&query=title%3A$searchValue';
-    final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
-
-    final authorization = {"Authorization": "Bearer $token"};
-    final response = await http.get(Uri.parse(url), headers: authorization);
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'content-type': 'application/json',
+      },
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonArray = json.decode(response.body);
       final articleList =
