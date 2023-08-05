@@ -46,16 +46,13 @@ class _UserPageState extends State<UserPage> {
     listArticle.addAll(await futureArticles!);
     print('表示件数: ${listArticle.length}');
 
-    //mounted必要
-    if (mounted) {
-      setState(
-        () {
-          if (listArticle.isNotEmpty) {
-            pageNumber++;
-          }
-        },
-      );
-    }
+    setState(
+      () {
+        if (listArticle.isNotEmpty) {
+          pageNumber++;
+        }
+      },
+    );
   }
 
   void _scrollListener() async {
@@ -120,7 +117,7 @@ class _UserPageState extends State<UserPage> {
                           return SizedBox(
                             height: constraints.minHeight,
                             child: ArticleListView(
-                              articles: listArticle,
+                              articles: snapshot.data as List<Article>,
                               scrollController: _scrollController,
                               itemCount: _isLoading
                                   ? listArticle.length + 1
