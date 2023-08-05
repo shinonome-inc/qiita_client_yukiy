@@ -8,19 +8,25 @@ class SettingsPage extends StatelessWidget {
     return const Divider(
       color: Color(0xFFE0E0E0),
       thickness: 0.5,
-      indent: 16,
+      indent: 5,
     );
   }
 
   Widget settingList(String listText, void Function()? onPressed) {
-    return Row(
-      children: [
-        Text(listText),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward_ios),
-          onPressed: onPressed,
-        )
-      ],
+    return SizedBox(
+      height: 40,
+
+      // child: ListTile(
+      //   children: [
+      //     Text(listText),
+      //     IconButton(
+      //       icon: const Icon(
+      //         Icons.arrow_forward_ios_sharp,
+      //         size: 14,
+      //       ),
+      //       onPressed: onPressed,
+      //     )
+      //   ],
     );
   }
 
