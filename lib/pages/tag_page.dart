@@ -56,53 +56,50 @@ class _TagPageState extends State<TagPage> {
     }
   }
 
-  Widget tagScreen() {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: UpperBar(
-        showSearchBar: false,
-        appBarText: 'Tags',
-        textField: const TextField(),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: FutureBuilder<List<Tag>>(
-          future: futureTag,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                _isLoading) {
-              _isLoading = false;
-              pageNumber += 1;
-              listTags.addAll(snapshot.data ?? []);
-              print('タグ件数: ${listTags.length}');
-            }
-            if (snapshot.hasData) {
-              return TagGridView(
-                tagList: listTags,
-                itemCount: listTags.length,
-                scrollController: _scrollController,
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-              );
-            }
-            print(snapshot.error);
-            return const CircularProgressIndicator();
-          },
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: UpperBar(
+          showSearchBar: false,
+          appBarText: 'Tags',
+          textField: const TextField(),
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
+          child: FutureBuilder<List<Tag>>(
+            future: futureTag,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  _isLoading) {
+                _isLoading = false;
+                pageNumber += 1;
+                listTags.addAll(snapshot.data ?? []);
+                print('タグ件数: ${listTags.length}');
+              }
+              if (snapshot.hasData) {
+                return TagGridView(
+                  tagList: listTags,
+                  itemCount: listTags.length,
+                  scrollController: _scrollController,
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                );
+              }
+              print(snapshot.error);
+              return const CircularProgressIndicator();
+            },
+          ),
         ),
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return isLogin != null && isLogin!
-        ? WillPopScope(child: tagScreen(), onWillPop: () async => false)
-        : tagScreen();
   }
 }
