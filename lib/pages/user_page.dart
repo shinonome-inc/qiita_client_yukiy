@@ -21,7 +21,7 @@ class _UserPageState extends State<UserPage> {
   Future<AuthenticatedUser>? futureAuthentication;
   int pageNumber = 1;
   late ScrollController _scrollController;
-  late bool _isLoading = true;
+  bool _isLoading = true;
 
   @override
   void initState() {
