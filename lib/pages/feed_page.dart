@@ -41,15 +41,13 @@ class _FeedPageState extends State<FeedPage> {
     listArticle.addAll(await futureArticles!);
     print('表示件数: ${listArticle.length}');
 
-    if (mounted) {
-      setState(
-        () {
-          if (listArticle.isNotEmpty) {
-            pageNumber++;
-          }
-        },
-      );
-    }
+    setState(
+      () {
+        if (listArticle.isNotEmpty) {
+          pageNumber++;
+        }
+      },
+    );
   }
 
   void _scrollListener() async {
@@ -57,11 +55,9 @@ class _FeedPageState extends State<FeedPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-      }
+      setState(() {
+        _isLoading = true;
+      });
       await _fetchData();
     }
   }
@@ -79,12 +75,11 @@ class _FeedPageState extends State<FeedPage> {
               if (value.isEmpty) {
                 print("https://qiita.com/api/v2/items");
               } else {
-                if (mounted) {
-                  setState(() {
-                    listArticle = [];
-                    pageNumber = 1;
-                  });
-                }
+                setState(() {
+                  listArticle = [];
+                  pageNumber = 1;
+                });
+
                 futureArticles = QiitaClient.fetchArticle(value, pageNumber);
                 listArticle.addAll(await futureArticles!);
               }

@@ -46,6 +46,7 @@ class _UserPageState extends State<UserPage> {
     listArticle.addAll(await futureArticles!);
     print('表示件数: ${listArticle.length}');
 
+    //mounted必要
     if (mounted) {
       setState(
         () {
@@ -62,11 +63,6 @@ class _UserPageState extends State<UserPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-      }
       await _fetchData();
     }
   }

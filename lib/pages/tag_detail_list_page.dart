@@ -41,11 +41,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-      }
       await _fetchTagData();
     }
   }
