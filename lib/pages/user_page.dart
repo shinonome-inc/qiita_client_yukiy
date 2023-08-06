@@ -82,7 +82,8 @@ class _UserPageState extends State<UserPage> {
               builder: (BuildContext context,
                   AsyncSnapshot<AuthenticatedUser> snapshot) {
                 if (snapshot.hasData) {
-                  return myIntroduction(snapshot.data!, context);
+                  return MyPageIntroduction(
+                      authenticatedUser: authenticatedUser);
                 } else if (snapshot.hasError) {
                   return const Text("受け取れていません");
                 }
