@@ -37,23 +37,9 @@ class ArticleListView extends StatelessWidget {
           return _loadingView();
         }
         final article = articles[index];
-        if (index == 0) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showGreyPart) GreyArticlePart(),
-              listTile(article, context, showImage: showImage),
-              const Divider(
-                color: Color.fromRGBO(178, 178, 178, 1),
-                thickness: 0.5,
-                height: 8,
-                indent: 20,
-              ),
-            ],
-          );
-        }
         return Column(
           children: [
+            if (index == 0 && showGreyPart) GreyArticlePart(),
             listTile(article, context, showImage: showImage),
             const Divider(
               color: Color.fromRGBO(178, 178, 178, 1),
