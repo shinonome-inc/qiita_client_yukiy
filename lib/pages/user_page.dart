@@ -33,7 +33,6 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> _fetchData() async {
     print("fetched");
-    await Future.delayed(const Duration(seconds: 1));
     print('pageNumber is $pageNumber');
     futureAuthentication = QiitaClient.fetchAuthenticatedUser();
     authenticatedUser = await futureAuthentication;
