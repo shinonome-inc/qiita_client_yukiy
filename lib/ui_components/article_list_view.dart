@@ -106,7 +106,12 @@ class ArticleListView extends StatelessWidget {
       ),
       onTap: () {
         showModalBottomSheet(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(10.0),
+            ),
+          ),
           context: context,
           isScrollControlled: true,
           builder: (BuildContext context) {
