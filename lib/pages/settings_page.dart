@@ -9,24 +9,32 @@ class SettingsPage extends StatelessWidget {
       color: Color(0xFFE0E0E0),
       thickness: 0.5,
       indent: 5,
+      height: 0,
     );
   }
 
   Widget settingList(String listText, void Function()? onPressed) {
     return SizedBox(
       height: 40,
-
-      // child: ListTile(
-      //   children: [
-      //     Text(listText),
-      //     IconButton(
-      //       icon: const Icon(
-      //         Icons.arrow_forward_ios_sharp,
-      //         size: 14,
-      //       ),
-      //       onPressed: onPressed,
-      //     )
-      //   ],
+      width: double.infinity,
+      child: ListTile(
+          tileColor: Colors.white,
+          dense: true,
+          contentPadding: const EdgeInsets.only(left: 16),
+          title: Text(
+            listText,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          trailing: IconButton(
+            constraints: const BoxConstraints(),
+            splashRadius: 20,
+            icon: const ImageIcon(
+              AssetImage('assets/images/vector.png'),
+              color: Colors.black,
+              size: 24,
+            ),
+            onPressed: onPressed,
+          )),
     );
   }
 
@@ -41,45 +49,42 @@ class SettingsPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 20, left: 16),
-                child: const Text(
-                  'アプリ情報',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF828282),
-                    fontWeight: FontWeight.w500,
-                  ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 20, left: 16),
+              child: const Text(
+                'アプリ情報',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF828282),
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              settingList(
-                "プライバシーポリシー",
-                () {
-                  //プライバシーポリシー
-                },
-              ),
-              customDivider(),
-              settingList(
-                "利用規約",
-                () {
-                  //利用規約
-                },
-              ),
-              customDivider(),
-              settingList(
-                "アプリバージョン",
-                () {
-                  //アプリバージョン
-                },
-              ),
-              customDivider(),
-            ],
-          ),
+            ),
+            settingList(
+              "プライバシーポリシー",
+              () {
+                //プライバシーポリシー
+              },
+            ),
+            customDivider(),
+            settingList(
+              "利用規約",
+              () {
+                //利用規約
+              },
+            ),
+            customDivider(),
+            settingList(
+              "アプリバージョン",
+              () {
+                //アプリバージョン
+              },
+            ),
+            customDivider(),
+          ],
         ),
       ),
     );
