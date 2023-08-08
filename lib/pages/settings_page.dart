@@ -24,24 +24,21 @@ class SettingsPage extends StatelessWidget {
         textField: const TextField(),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const CustomSettingName(text: "アプリ情報"),
-            VariableHeightListTile(
-                title: "プライバシーポリシー",
-                trailing: CustomIconButton(onPressed: () {})),
-            customDivider(),
-            VariableHeightListTile(
-                title: "利用規約", trailing: CustomIconButton(onPressed: () {})),
-            customDivider(),
-            VariableHeightListTile(
-                title: "アプリバージョン",
-                trailing: CustomIconButton(onPressed: () {})),
-            customDivider(),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const CustomSettingName(text: "アプリ情報"),
+          VariableHeightListTile(
+              title: "プライバシーポリシー",
+              trailing: CustomIconButton(onPressed: () {})),
+          customDivider(),
+          VariableHeightListTile(
+              title: "利用規約", trailing: CustomIconButton(onPressed: () {})),
+          customDivider(),
+          VariableHeightListTile(
+              title: "アプリバージョン", trailing: CustomIconButton(onPressed: () {})),
+          customDivider(),
+        ],
       ),
     );
   }
