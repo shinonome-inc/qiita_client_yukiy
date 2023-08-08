@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
+import 'package:qiita_client_yukiy/ui_components/variable_height_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -8,33 +9,8 @@ class SettingsPage extends StatelessWidget {
     return const Divider(
       color: Color(0xFFE0E0E0),
       thickness: 0.5,
-      indent: 5,
+      indent: 16,
       height: 0,
-    );
-  }
-
-  Widget settingList(String listText, void Function()? onPressed) {
-    return SizedBox(
-      height: 40,
-      width: double.infinity,
-      child: ListTile(
-          tileColor: Colors.white,
-          dense: true,
-          contentPadding: const EdgeInsets.only(left: 16),
-          title: Text(
-            listText,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-          ),
-          trailing: IconButton(
-            constraints: const BoxConstraints(),
-            splashRadius: 20,
-            icon: const ImageIcon(
-              AssetImage('assets/images/vector.png'),
-              color: Colors.black,
-              size: 24,
-            ),
-            onPressed: onPressed,
-          )),
     );
   }
 
@@ -52,41 +28,47 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 16),
-              child: const Text(
-                'アプリ情報',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF828282),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            settingList(
-              "プライバシーポリシー",
-              () {
-                //プライバシーポリシー
-              },
-            ),
+            const CustomSettingName(text: "アプリ情報"),
+            VariableHeightListTile(
+                title: "プライバシーポリシー",
+                trailing: CustomIconButton(onPressed: () {})),
             customDivider(),
-            settingList(
-              "利用規約",
-              () {
-                //利用規約
-              },
-            ),
+            VariableHeightListTile(
+                title: "利用規約", trailing: CustomIconButton(onPressed: () {})),
             customDivider(),
-            settingList(
-              "アプリバージョン",
-              () {
-                //アプリバージョン
-              },
-            ),
+            VariableHeightListTile(
+                title: "アプリバージョン",
+                trailing: CustomIconButton(onPressed: () {})),
             customDivider(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomSettingName extends StatelessWidget {
+  final String text;
+
+  const CustomSettingName({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 32, bottom: 8, left: 16),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF828282),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
