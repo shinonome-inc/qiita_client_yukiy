@@ -34,7 +34,7 @@ class VariableHeightListTile extends StatelessWidget {
               ],
             ),
           ),
-          CustomIconButton(onPressed: onTap),
+          trailing,
         ],
       ),
     );
@@ -49,14 +49,13 @@ class CustomIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      constraints: const BoxConstraints(),
-      splashRadius: 20,
+      splashRadius: 50,
       icon: const ImageIcon(
         AssetImage('assets/images/vector.png'),
         color: Colors.black,
         size: 24,
       ),
-      onPressed: onPressed,
+      onPressed: () {},
     );
   }
 }

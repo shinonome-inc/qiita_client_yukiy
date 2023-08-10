@@ -29,14 +29,29 @@ class SettingsPage extends StatelessWidget {
         children: [
           const CustomSettingName(text: "アプリ情報"),
           VariableHeightListTile(
-              title: "プライバシーポリシー",
-              trailing: CustomIconButton(onPressed: () {})),
+            title: "プライバシーポリシー",
+            trailing: CustomIconButton(
+              onPressed: () {},
+            ),
+          ),
           customDivider(),
           VariableHeightListTile(
-              title: "利用規約", trailing: CustomIconButton(onPressed: () {})),
+            title: "利用規約",
+            trailing: CustomIconButton(
+              onPressed: () {},
+            ),
+          ),
           customDivider(),
-          VariableHeightListTile(
-              title: "アプリバージョン", trailing: CustomIconButton(onPressed: () {})),
+          const VariableHeightListTile(
+            title: "アプリバージョン",
+            trailing: Text('バージョン'),
+          ),
+          customDivider(),
+          const CustomSettingName(text: "その他"),
+          const VariableHeightListTile(
+            title: "ログアウトする",
+            trailing: SizedBox.shrink(),
+          ),
           customDivider(),
         ],
       ),
