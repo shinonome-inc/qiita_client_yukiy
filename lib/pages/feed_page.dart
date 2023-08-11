@@ -19,16 +19,12 @@ class _FeedPageState extends State<FeedPage> {
   late bool _isLoading = true;
   int pageNumber = 1;
   bool showGreyPart = false;
-  // bool? isLogin;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _fetchData();
-    // Future(() async {
-    //   isLogin = await QiitaClient.switchPage();
-    // });
     super.initState();
   }
 
