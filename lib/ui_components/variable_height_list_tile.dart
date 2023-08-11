@@ -14,28 +14,25 @@ class VariableHeightListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      width: double.infinity,
-      height: 40,
-      padding: const EdgeInsets.only(left: 16.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-              ],
+    double? deviceWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      child: Container(
+        color: Colors.white,
+        width: deviceWidth,
+        height: 40,
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
             ),
-          ),
-          trailing,
-        ],
+            trailing,
+          ],
+        ),
       ),
     );
   }

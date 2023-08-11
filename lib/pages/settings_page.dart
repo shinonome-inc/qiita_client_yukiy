@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/pribacy_policy.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 import 'package:qiita_client_yukiy/ui_components/variable_height_list_tile.dart';
 
@@ -28,17 +29,63 @@ class SettingsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const CustomSettingName(text: "アプリ情報"),
-          VariableHeightListTile(
-            title: "プライバシーポリシー",
-            trailing: CustomIconButton(
-              onPressed: () {},
+          GestureDetector(
+            onTap: () {
+              double? deviceHeight = MediaQuery.of(context).size.height;
+              showModalBottomSheet(
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10.0),
+                  ),
+                ),
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: deviceHeight * 0.9,
+                    child: const PrivacyPolicy(),
+                  );
+                },
+              );
+            },
+            child: const VariableHeightListTile(
+              title: "プライバシーポリシー",
+              trailing: ImageIcon(
+                AssetImage('assets/images/vector.png'),
+                color: Colors.black,
+                size: 24,
+              ),
             ),
           ),
           customDivider(),
-          VariableHeightListTile(
-            title: "利用規約",
-            trailing: CustomIconButton(
-              onPressed: () {},
+          GestureDetector(
+            onTap: () {
+              double? deviceHeight = MediaQuery.of(context).size.height;
+              showModalBottomSheet(
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10.0),
+                  ),
+                ),
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: deviceHeight * 0.9,
+                    child: const PrivacyPolicy(),
+                  );
+                },
+              );
+            },
+            child: const VariableHeightListTile(
+              title: "利用規約",
+              trailing: ImageIcon(
+                AssetImage('assets/images/vector.png'),
+                color: Colors.black,
+                size: 24,
+              ),
             ),
           ),
           customDivider(),
