@@ -111,9 +111,12 @@ class QiitaClient {
   }
 
   static String fetchLogin() {
+    Uri uri;
+    uri = Uri.parse('https://qiita.com');
+    final String? state = uri.queryParameters["state"];
 //認証
     String url =
-        'https://qiita.com//api/v2/oauth/authorize?client_id=$clientID&scope=read_qiita+write_qiita&state=bb17785d811bb1913ef54b0a7657de780defaa2d';
+        'https://qiita.com//api/v2/oauth/authorize?client_id=$clientID&scope=read_qiita+write_qiita&state=$state';
     return url;
   }
 

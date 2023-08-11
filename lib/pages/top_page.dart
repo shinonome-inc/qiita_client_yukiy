@@ -20,7 +20,7 @@ class _TopPageState extends State<TopPage> {
     isLoading = true;
     accessToken = await QiitaClient.fetchAccessToken(widget.code!);
     await QiitaClient.saveAccessToken(accessToken!);
-    print(accessToken);
+    print('accessToken💫 $accessToken');
     if (!mounted) return;
     Navigator.push(
       context,

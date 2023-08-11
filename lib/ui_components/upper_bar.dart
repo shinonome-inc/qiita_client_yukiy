@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'search_bar.dart';
+import 'qiita_search_bar.dart';
 
 class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(375, showSearchBar ? 114 : kToolbarHeight);
   final Widget textField;
 
-  UpperBar({
+  const UpperBar({
     Key? key,
     this.showSearchBar = false,
     required this.appBarText,
@@ -17,7 +17,7 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
 
   final bool showSearchBar;
   final String appBarText;
-  bool automaticallyImplyLeading = false;
+  final bool automaticallyImplyLeading;
   @override
   Widget build(BuildContext context) {
     return AppBar(
