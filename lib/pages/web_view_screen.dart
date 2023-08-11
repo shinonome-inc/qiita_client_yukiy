@@ -63,11 +63,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) => WillPopScope(
-                        onWillPop: () async => false,
-                        child: TopPage(
-                          code: code,
-                        ),
+                      builder: (BuildContext context) => TopPage(
+                        code: code,
                       ),
                     ),
                   );
