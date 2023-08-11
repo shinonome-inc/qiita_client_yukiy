@@ -46,13 +46,13 @@ class QiitaClient {
   //端末に保存
   static Future<void> saveAccessToken(String accessToken) async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString("api_key", accessToken);
+    prefs.setString("token", accessToken);
   }
 
   //端末から取ってくる
   static Future<String?> getAccessToken() async {
     var prefs = await SharedPreferences.getInstance();
-    final String? accessToken = prefs.getString("api_key");
+    final String? accessToken = prefs.getString("token");
     return accessToken;
   }
 
