@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:qiita_client_yukiy/pages/pribacy_policy.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:qiita_client_yukiy/constants/pribacy_policy.dart';
+import 'package:qiita_client_yukiy/constants/terms_of_service.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 import 'package:qiita_client_yukiy/ui_components/variable_height_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
+
+  Future<String> getVersionInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var text = 'v${packageInfo.version}';
+    return text;
+  }
 
   Widget customDivider() {
     return const Divider(
@@ -74,7 +82,7 @@ class SettingsPage extends StatelessWidget {
                 builder: (BuildContext context) {
                   return SizedBox(
                     height: deviceHeight * 0.9,
-                    child: const PrivacyPolicy(),
+                    child: const TermsOfService(),
                   );
                 },
               );
@@ -89,9 +97,16 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           customDivider(),
-          const VariableHeightListTile(
+          VariableHeightListTile(
             title: "アプリバージョン",
-            trailing: Text('バージョン'),
+            trailing: FutureBuilder<String>(
+              future: getVersionInfo(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return Text(
+                  snapshot.hasData ? snapshot.data : '受け取れてません',
+                );
+              },
+            ),
           ),
           customDivider(),
           const CustomSettingName(text: "その他"),
