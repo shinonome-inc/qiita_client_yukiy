@@ -5,12 +5,10 @@ class VariableHeightListTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.trailing,
-    this.onTap,
   });
 
   final String title;
   final Widget trailing;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,25 +32,6 @@ class VariableHeightListTile extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CustomIconButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-
-  const CustomIconButton({super.key, this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      splashRadius: 50,
-      icon: const ImageIcon(
-        AssetImage('assets/images/vector.png'),
-        color: Colors.black,
-        size: 24,
-      ),
-      onPressed: () {},
     );
   }
 }
