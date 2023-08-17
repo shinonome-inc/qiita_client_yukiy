@@ -128,21 +128,17 @@ class CustomSettingName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 32, bottom: 8, left: 16),
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color(0xFF828282),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: const EdgeInsets.only(top: 32, bottom: 8, left: 16),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Color(0xFF828282),
+          fontWeight: FontWeight.w500,
         ),
-      ],
+      ),
     );
   }
 }
