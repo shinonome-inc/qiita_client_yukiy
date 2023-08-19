@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget implements PreferredSizeWidget {
-  const SearchBar({Key? key, required this.textField}) : super(key: key);
+class QiitaSearchBar extends StatelessWidget implements PreferredSizeWidget {
+  const QiitaSearchBar({Key? key, required this.textField}) : super(key: key);
   final Widget textField;
 
   @override
