@@ -55,7 +55,8 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget listName(BuildContext context, Widget selectModal, String listTitle) {
+  Widget modalTriggerTile(
+      BuildContext context, Widget selectModal, String listTitle) {
     return VariableHeightListTile(
       onTap: () {
         double? deviceHeight = MediaQuery.of(context).size.height;
@@ -99,13 +100,13 @@ class SettingsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const CustomSettingName(text: "アプリ情報"),
-          listName(
+          modalTriggerTile(
             context,
             modalContentWidget("プライバシーポリシー", ModalText.privacyPolicy),
             "プライバシーポリシー",
           ),
           customDivider(),
-          listName(
+          modalTriggerTile(
             context,
             modalContentWidget("利用規約", ModalText.termsOfService),
             "利用規約",
