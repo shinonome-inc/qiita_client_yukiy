@@ -99,7 +99,7 @@ class SettingsPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const CustomSettingName(text: "アプリ情報"),
+          const SettingSectionHeader(text: "アプリ情報"),
           modalTriggerTile(
             context,
             modalContentWidget("プライバシーポリシー", ModalText.privacyPolicy),
@@ -124,7 +124,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           customDivider(),
-          const CustomSettingName(text: "その他"),
+          const SettingSectionHeader(text: "その他"),
           const VariableHeightListTile(
             title: "ログアウトする",
             trailing: SizedBox.shrink(),
@@ -136,10 +136,10 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class CustomSettingName extends StatelessWidget {
+class SettingSectionHeader extends StatelessWidget {
   final String text;
 
-  const CustomSettingName({super.key, required this.text});
+  const SettingSectionHeader({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
