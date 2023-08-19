@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 
 class VariableHeightListTile extends StatelessWidget {
-  const VariableHeightListTile({
-    super.key,
-    required this.title,
-    required this.trailing,
-  });
+  const VariableHeightListTile(
+      {super.key, required this.title, required this.trailing, this.onTap});
 
   final String title;
   final Widget trailing;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     double? deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
+      onTap: onTap,
       child: Container(
         color: Colors.white,
         width: deviceWidth,

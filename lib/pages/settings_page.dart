@@ -55,9 +55,8 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget customModal(
-      BuildContext context, Widget selectModal, String listTitle) {
-    return GestureDetector(
+  Widget listName(BuildContext context, Widget selectModal, String listTitle) {
+    return VariableHeightListTile(
       onTap: () {
         double? deviceHeight = MediaQuery.of(context).size.height;
         showModalBottomSheet(
@@ -77,13 +76,11 @@ class SettingsPage extends StatelessWidget {
           },
         );
       },
-      child: VariableHeightListTile(
-        title: listTitle,
-        trailing: const ImageIcon(
-          AssetImage('assets/images/vector.png'),
-          color: Colors.black,
-          size: 24,
-        ),
+      title: listTitle,
+      trailing: const ImageIcon(
+        AssetImage('assets/images/vector.png'),
+        color: Colors.black,
+        size: 24,
       ),
     );
   }
@@ -102,13 +99,13 @@ class SettingsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const CustomSettingName(text: "アプリ情報"),
-          customModal(
+          listName(
             context,
             settingModal("プライバシーポリシー", ModalText.privacyPolicy),
             "プライバシーポリシー",
           ),
           customDivider(),
-          customModal(
+          listName(
             context,
             settingModal("利用規約", ModalText.termsOfService),
             "利用規約",
