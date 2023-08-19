@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:qiita_client_yukiy/pages/settings_page/modal_text.dart';
-import 'package:qiita_client_yukiy/pages/settings_page/variable_height_list_tile.dart';
+import 'package:qiita_client_yukiy/constants/modal_text.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
+import 'package:qiita_client_yukiy/ui_components/variable_height_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
