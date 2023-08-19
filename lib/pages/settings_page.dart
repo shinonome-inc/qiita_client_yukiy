@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget settingModal(String title, String content) {
+  Widget modalContentWidget(String title, String content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -101,13 +101,13 @@ class SettingsPage extends StatelessWidget {
           const CustomSettingName(text: "アプリ情報"),
           listName(
             context,
-            settingModal("プライバシーポリシー", ModalText.privacyPolicy),
+            modalContentWidget("プライバシーポリシー", ModalText.privacyPolicy),
             "プライバシーポリシー",
           ),
           customDivider(),
           listName(
             context,
-            settingModal("利用規約", ModalText.termsOfService),
+            modalContentWidget("利用規約", ModalText.termsOfService),
             "利用規約",
           ),
           customDivider(),
