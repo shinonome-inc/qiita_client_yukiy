@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/pages/my_page.dart';
 import 'package:qiita_client_yukiy/pages/tag_page.dart';
 
-import '../pages/settings_page.dart';
 import 'feed_page.dart';
+import 'settings_page.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
