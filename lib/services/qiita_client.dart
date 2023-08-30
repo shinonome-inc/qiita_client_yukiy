@@ -12,7 +12,6 @@ import '../models/tag.dart';
 class QiitaClient {
   static final clientID = dotenv.env['CLIENTID'];
   static final clientSecret = dotenv.env['CLIENTSECRET'];
-  static final state = dotenv.env['STATE'];
 
   static String createAuthorizeUrl() {
     const scope = 'read_qiita%20write_qiita';
@@ -112,6 +111,9 @@ class QiitaClient {
   }
 
   static String fetchLogin() {
+    Uri uri;
+    uri = Uri.parse('https://qiita.com');
+    final String? state = uri.queryParameters["state"];
 //認証
     String url =
         'https://qiita.com//api/v2/oauth/authorize?client_id=$clientID&scope=read_qiita+write_qiita&state=$state';
