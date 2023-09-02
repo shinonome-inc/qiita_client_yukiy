@@ -34,8 +34,20 @@ class _TagPageState extends State<TagPage> {
   Future<void> _fetchTagData() async {
     print('タグ数は $pageNumberです');
     print("タグ一覧取得");
-    _isLoading = true;
+    _isLoading = false;
     futureTag = QiitaClient.fetchTags(pageNumber);
+    listTags.addAll(await futureTag);
+    print('タグ件数: ${listTags.length}');
+
+    if (mounted) {
+      setState(
+        () {
+          if (listTags.isNotEmpty) {
+            pageNumber++;
+          }
+        },
+      );
+    }
   }
 
   void _scrollListener() async {
@@ -66,13 +78,6 @@ class _TagPageState extends State<TagPage> {
         child: FutureBuilder<List<Tag>>(
           future: futureTag,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                _isLoading) {
-              _isLoading = false;
-              pageNumber += 1;
-              listTags.addAll(snapshot.data ?? []);
-              print('タグ件数: ${listTags.length}');
-            }
             if (snapshot.hasData) {
               return TagGridView(
                 tagList: listTags,
@@ -81,7 +86,11 @@ class _TagPageState extends State<TagPage> {
               );
             } else if (snapshot.hasError) {
               print(snapshot.error);
-              return ErrorPage();
+              return ErrorPage(
+                onTapped: () {
+                  _fetchTagData();
+                },
+              );
             }
             return const CircularProgressIndicator();
           },

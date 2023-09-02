@@ -135,7 +135,11 @@ class _FeedPageState extends State<FeedPage> {
               );
             } else if (snapshot.hasError) {
               print(snapshot.error);
-              return ErrorPage();
+              return ErrorPage(
+                onTapped: () {
+                  _fetchData();
+                },
+              );
             }
             return const CircularProgressIndicator();
           },

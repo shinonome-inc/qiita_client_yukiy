@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../ui_components/thin_long_rounded_button.dart';
 
 class ErrorPage extends StatelessWidget {
-  ErrorPage({Key? key}) : super(key: key);
-  late final double screenHeight;
+  ErrorPage({Key? key, required this.onTapped}) : super(key: key);
+  final VoidCallback onTapped;
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,7 +48,7 @@ class ErrorPage extends StatelessWidget {
             child: ThinLongRoundedButton(
               text: '再読み込みする',
               backgroundColor: const Color(0xFF74C13A),
-              onPressed: () {},
+              onPressed: onTapped,
             ),
           ),
           Container(
