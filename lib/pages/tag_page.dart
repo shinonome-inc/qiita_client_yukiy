@@ -4,6 +4,8 @@ import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/tag_grid_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
+import 'error_page.dart';
+
 class TagPage extends StatefulWidget {
   const TagPage({
     Key? key,
@@ -34,7 +36,6 @@ class _TagPageState extends State<TagPage> {
     print("タグ一覧取得");
     _isLoading = true;
     futureTag = QiitaClient.fetchTags(pageNumber);
-    await Future.delayed(const Duration(seconds: 3));
   }
 
   void _scrollListener() async {
@@ -79,15 +80,9 @@ class _TagPageState extends State<TagPage> {
                 scrollController: _scrollController,
               );
             } else if (snapshot.hasError) {
-              return const Center(
-                child: Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-              );
+              print(snapshot.error);
+              return ErrorPage();
             }
-            print(snapshot.error);
             return const CircularProgressIndicator();
           },
         ),
