@@ -28,6 +28,7 @@ class ArticleListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       controller: scrollController,
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
