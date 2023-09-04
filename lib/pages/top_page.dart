@@ -10,8 +10,12 @@ class TopPage extends StatefulWidget {
 }
 
 class _TopPageState extends State<TopPage> {
+  late double screenHeight = 0;
+
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -33,8 +37,8 @@ class _TopPageState extends State<TopPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const SizedBox(
-                  height: 220,
+                SizedBox(
+                  height: screenHeight / 4,
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -71,6 +75,9 @@ class _TopPageState extends State<TopPage> {
                     );
                   },
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
                 ThinLongRoundedButton(
                   text: 'ログインせずに利用する',
                   backgroundColor: Colors.transparent,
@@ -78,7 +85,7 @@ class _TopPageState extends State<TopPage> {
                 ),
                 const SizedBox(
                   height: 81,
-                )
+                ),
               ],
             ),
           ],

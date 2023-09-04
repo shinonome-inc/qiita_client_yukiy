@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qiita_client_yukiy/ui_components/search_bar.dart';
+import 'package:qiita_client_yukiy/ui_components/qiita_search_bar.dart';
 
 class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -31,7 +31,7 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       iconTheme: const IconThemeData(color: Color(0xFF468300)),
       bottom: showSearchBar
-          ? SearchBar(
+          ? QiitaSearchBar(
               textField: textField,
             )
           : null,
