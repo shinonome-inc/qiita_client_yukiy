@@ -19,6 +19,7 @@ class _FeedPageState extends State<FeedPage> {
   late bool _isLoading = true;
   int pageNumber = 1;
   bool showGreyPart = false;
+  final _editController = TextEditingController();
 
   @override
   void initState() {
@@ -69,6 +70,7 @@ class _FeedPageState extends State<FeedPage> {
         showSearchBar: true,
         appBarText: 'Feed',
         textField: TextField(
+          controller: _editController,
           onSubmitted: (value) async {
             if (value.isEmpty) {
               print("https://qiita.com/api/v2/items");
@@ -93,6 +95,13 @@ class _FeedPageState extends State<FeedPage> {
                 borderSide: BorderSide.none),
             hintText: 'Search',
             prefixIcon: const Icon(Icons.search),
+            suffixIcon: IconButton(
+              onPressed: () {
+                _editController.clear();
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            suffixIconColor: Colors.grey,
             iconColor: const Color.fromRGBO(142, 142, 147, 0),
             hintStyle: const TextStyle(
               color: Colors.grey,
