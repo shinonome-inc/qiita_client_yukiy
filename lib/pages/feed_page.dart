@@ -33,7 +33,6 @@ class _FeedPageState extends State<FeedPage> {
     _isLoading = false;
     futureArticles = QiitaClient.fetchArticle("", pageNumber);
     listArticle.addAll(await futureArticles!);
-    print('表示件数: ${listArticle.length}');
 
     if (mounted) {
       setState(
