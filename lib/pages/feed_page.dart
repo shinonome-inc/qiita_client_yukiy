@@ -19,7 +19,6 @@ class _FeedPageState extends State<FeedPage> {
   late ScrollController _scrollController;
   late bool _isLoading = true;
   int pageNumber = 1;
-  bool showGreyPart = false;
   final _editController = TextEditingController();
   bool showNoSearchResult = false;
 
@@ -65,6 +64,27 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
+  Future<void> _handleRefresh() async {
+    if (mounted) {
+      setState(() {
+        listArticle = [];
+        pageNumber = 1;
+      });
+    }
+    futureArticles = QiitaClient.fetchArticle(_editController.text, pageNumber);
+    final searchResults = await futureArticles!;
+    if (searchResults.isEmpty) {
+      setState(() {
+        showNoSearchResult = true;
+      });
+    } else {
+      setState(() {
+        listArticle.addAll(searchResults);
+        showNoSearchResult = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,32 +93,8 @@ class _FeedPageState extends State<FeedPage> {
         appBarText: 'Feed',
         textField: TextField(
           controller: _editController,
-          onSubmitted: (value) async {
-            if (value.isEmpty) {
-              print("https://qiita.com/api/v2/items");
-            } else {
-              if (mounted) {
-                setState(() {
-                  listArticle = [];
-                  pageNumber = 1;
-                  _isLoading = true;
-                });
-              }
-              futureArticles = QiitaClient.fetchArticle(value, pageNumber);
-              final searchResults = await futureArticles!;
-              if (searchResults.isEmpty) {
-                setState(() {
-                  showNoSearchResult = true;
-                  _isLoading = false;
-                });
-              } else {
-                setState(() {
-                  listArticle.addAll(searchResults);
-                  showNoSearchResult = false;
-                  _isLoading = false;
-                });
-              }
-            }
+          onSubmitted: (value) {
+            _handleRefresh();
           },
           cursorColor: Colors.grey,
           decoration: InputDecoration(
@@ -129,29 +125,33 @@ class _FeedPageState extends State<FeedPage> {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: FutureBuilder<List<Article>>(
-          future: futureArticles,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
-              );
-            } else {
-              if (showNoSearchResult) {
-                return NoSearchResult();
-              } else {
-                return ArticleListView(
-                  articles: listArticle,
-                  scrollController: _scrollController,
-                  itemCount:
-                      _isLoading ? listArticle.length + 1 : listArticle.length,
+        child: RefreshIndicator(
+          onRefresh: _handleRefresh,
+          child: FutureBuilder<List<Article>>(
+            future: futureArticles,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
                 );
+              } else {
+                if (showNoSearchResult) {
+                  return NoSearchResult();
+                } else {
+                  return ArticleListView(
+                    articles: listArticle,
+                    scrollController: _scrollController,
+                    itemCount: _isLoading
+                        ? listArticle.length + 1
+                        : listArticle.length,
+                  );
+                }
               }
-            }
-          },
+            },
+          ),
         ),
       ),
     );
