@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // ignore: must_be_immutable
 class NoSearchResult extends StatelessWidget {
   NoSearchResult({Key? key}) : super(key: key);
