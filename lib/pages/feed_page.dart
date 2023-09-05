@@ -4,6 +4,7 @@ import 'package:qiita_client_yukiy/ui_components/article_list_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 import '../models/article.dart';
+import '../ui_components/no_search_result.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -131,6 +132,8 @@ class _FeedPageState extends State<FeedPage> {
                 color: Colors.red,
                 size: 60,
               );
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return NoSearchResult();
             }
             return const CircularProgressIndicator();
           },
