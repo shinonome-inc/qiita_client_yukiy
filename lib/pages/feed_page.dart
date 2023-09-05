@@ -21,6 +21,7 @@ class _FeedPageState extends State<FeedPage> {
   int pageNumber = 1;
   bool showGreyPart = false;
   final _editController = TextEditingController();
+  bool showNoSearchResult = false;
 
   @override
   void initState() {
@@ -80,10 +81,23 @@ class _FeedPageState extends State<FeedPage> {
                 setState(() {
                   listArticle = [];
                   pageNumber = 1;
+                  _isLoading = true;
                 });
               }
               futureArticles = QiitaClient.fetchArticle(value, pageNumber);
-              listArticle.addAll(await futureArticles!);
+              final searchResults = await futureArticles!;
+              if (searchResults.isEmpty) {
+                setState(() {
+                  showNoSearchResult = true;
+                  _isLoading = false;
+                });
+              } else {
+                setState(() {
+                  listArticle.addAll(searchResults);
+                  showNoSearchResult = false;
+                  _isLoading = false;
+                });
+              }
             }
           },
           cursorColor: Colors.grey,
@@ -118,24 +132,25 @@ class _FeedPageState extends State<FeedPage> {
         child: FutureBuilder<List<Article>>(
           future: futureArticles,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ArticleListView(
-                articles: listArticle,
-                scrollController: _scrollController,
-                itemCount:
-                    _isLoading ? listArticle.length + 1 : listArticle.length,
-              );
-            } else if (snapshot.hasError) {
+            if (snapshot.hasError) {
               print(snapshot.error);
               return const Icon(
                 Icons.error_outline,
                 color: Colors.red,
                 size: 60,
               );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return NoSearchResult();
+            } else {
+              if (showNoSearchResult) {
+                return NoSearchResult();
+              } else {
+                return ArticleListView(
+                  articles: listArticle,
+                  scrollController: _scrollController,
+                  itemCount:
+                      _isLoading ? listArticle.length + 1 : listArticle.length,
+                );
+              }
             }
-            return const CircularProgressIndicator();
           },
         ),
       ),
