@@ -18,7 +18,6 @@ class _TagPageState extends State<TagPage> {
   int pageNumber = 1;
   late Future<List<Tag>> futureTag;
   late bool _isLoading = true;
-  late Future<List<Tag>> futureTags;
   late ScrollController _scrollController;
 
   @override
@@ -30,11 +29,28 @@ class _TagPageState extends State<TagPage> {
   }
 
   Future<void> _fetchTagData() async {
-    print('タグ数は $pageNumberです');
+    print('タグ数は $pageNumber です');
     print("タグ一覧取得");
     _isLoading = true;
     futureTag = QiitaClient.fetchTags(pageNumber);
     await Future.delayed(const Duration(seconds: 3));
+  }
+
+  Future<void> _handleRefresh() async {
+    if (mounted) {
+      setState(() {
+        listTags = [];
+        pageNumber = 1;
+      });
+    }
+    futureTag = QiitaClient.fetchTags(pageNumber);
+    final tags = await futureTag;
+    if (tags.isNotEmpty) {
+      setState(() {
+        listTags.addAll(tags);
+        pageNumber += 1;
+      });
+    }
   }
 
   void _scrollListener() async {
@@ -62,34 +78,37 @@ class _TagPageState extends State<TagPage> {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: FutureBuilder<List<Tag>>(
-          future: futureTag,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                _isLoading) {
-              _isLoading = false;
-              pageNumber += 1;
-              listTags.addAll(snapshot.data ?? []);
-              print('タグ件数: ${listTags.length}');
-            }
-            if (snapshot.hasData) {
-              return TagGridView(
-                tagList: listTags,
-                itemCount: listTags.length,
-                scrollController: _scrollController,
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-              );
-            }
-            print(snapshot.error);
-            return const CircularProgressIndicator();
-          },
+        child: RefreshIndicator(
+          onRefresh: _handleRefresh,
+          child: FutureBuilder<List<Tag>>(
+            future: futureTag,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  _isLoading) {
+                _isLoading = false;
+                pageNumber += 1;
+                listTags.addAll(snapshot.data ?? []);
+                print('タグ件数: ${listTags.length}');
+              }
+              if (snapshot.hasData) {
+                return TagGridView(
+                  tagList: listTags,
+                  itemCount: listTags.length,
+                  scrollController: _scrollController,
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                );
+              }
+              print(snapshot.error);
+              return const CircularProgressIndicator();
+            },
+          ),
         ),
       ),
     );
