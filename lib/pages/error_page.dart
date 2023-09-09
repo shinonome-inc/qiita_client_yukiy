@@ -11,7 +11,7 @@ class ErrorPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFFFFF),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
