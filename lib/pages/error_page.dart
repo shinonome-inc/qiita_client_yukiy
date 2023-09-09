@@ -13,7 +13,7 @@ class ErrorPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             margin: const EdgeInsets.only(bottom: 36),
@@ -23,12 +23,9 @@ class ErrorPage extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 6),
-            child: const Align(
-              alignment: Alignment.center,
-              child: Text(
-                "ネットワークエラー",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
+            child: const Text(
+              "ネットワークエラー",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
           ),
           Container(
@@ -39,7 +36,6 @@ class ErrorPage extends StatelessWidget {
                 fontSize: 12,
                 height: 2,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
           Container(
