@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/error_page.dart';
 import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/article_list_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
@@ -24,8 +25,24 @@ class _FeedPageState extends State<FeedPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _fetchData();
+    _initFetchData();
     super.initState();
+  }
+
+  Future<void> _initFetchData() async {
+    _isLoading = false;
+    futureArticles = QiitaClient.fetchArticle("", pageNumber);
+    listArticle.addAll(await futureArticles!);
+
+    if (mounted) {
+      setState(
+        () {
+          if (listArticle.isNotEmpty) {
+            pageNumber++;
+          }
+        },
+      );
+    }
   }
 
   Future<void> _fetchData() async {
@@ -117,10 +134,10 @@ class _FeedPageState extends State<FeedPage> {
               );
             } else if (snapshot.hasError) {
               print(snapshot.error);
-              return const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
+              return ErrorPage(
+                onTapped: () {
+                  _fetchData();
+                },
               );
             }
             return const CircularProgressIndicator();
