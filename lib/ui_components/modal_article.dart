@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../pages/web_view_screen.dart';
 
 class ModalArticle extends StatelessWidget {
+  const ModalArticle({Key? key, required this.url, required this.text})
+      : super(key: key);
   final String url;
-  const ModalArticle({Key? key, required this.url}) : super(key: key);
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +23,11 @@ class ModalArticle extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               )),
-          child: const Text(
-            'Article',
+          child: Text(
+            text,
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'Pacifico-Regular', fontSize: 17),
+            style:
+                const TextStyle(fontFamily: 'Pacifico-Regular', fontSize: 17),
           ),
         ),
         Expanded(child: WebViewScreen(url: url)),

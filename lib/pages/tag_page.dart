@@ -22,12 +22,17 @@ class _TagPageState extends State<TagPage> {
   late bool _isLoading = true;
   late Future<List<Tag>> futureTags;
   late ScrollController _scrollController;
+  bool? isLogin;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _fetchTagData();
+    Future.delayed(Duration.zero, () async {
+      isLogin = await QiitaClient.switchPage();
+      setState(() {}); // isLoginの値が更新されたことを反映するためにsetStateを呼び出す
+    });
     super.initState();
   }
 
@@ -55,11 +60,10 @@ class _TagPageState extends State<TagPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-      }
+      setState(() {
+        _isLoading = true;
+      });
+
       await _fetchTagData();
     }
   }

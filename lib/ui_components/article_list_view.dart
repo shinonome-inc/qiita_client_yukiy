@@ -6,17 +6,19 @@ import 'package:qiita_client_yukiy/ui_components/grey_article_part.dart';
 import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
-  ArticleListView(
+  const ArticleListView(
       {Key? key,
       required this.articles,
       required this.scrollController,
       required this.itemCount,
-      this.showGreyPart = false})
+      this.showGreyPart = false,
+      this.showImage = true})
       : super(key: key);
   final ScrollController scrollController;
   final List<Article> articles;
   final int itemCount;
   final bool showGreyPart;
+  final bool showImage;
 
   String subtitle(Article article) {
     final dateTime = DateTime.parse(article.dateTime);
@@ -27,7 +29,7 @@ class ArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       controller: scrollController,
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
@@ -35,32 +37,29 @@ class ArticleListView extends StatelessWidget {
           return _loadingView();
         }
         final article = articles[index];
-        if (index == 0) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showGreyPart) GreyArticlePart(),
-              listTile(article, context),
-            ],
-          );
-        }
-        return listTile(article, context);
+        return Column(
+          children: [
+            if (index == 0 && showGreyPart) GreyArticlePart(),
+            listTile(article, context, showImage: showImage),
+            const Divider(
+              color: Color.fromRGBO(178, 178, 178, 1),
+              thickness: 0.5,
+              height: 8,
+              indent: 20,
+            ),
+          ],
+        );
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(
-        color: Color.fromRGBO(178, 178, 178, 1),
-        thickness: 0.5,
-        indent: 62,
-      ),
     );
   }
 
   Widget _loadingView() {
-    return Center(
+    return const Center(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             CircularProgressIndicator(),
             SizedBox(
               height: 8,
@@ -71,10 +70,9 @@ class ArticleListView extends StatelessWidget {
     );
   }
 
-  listTile(Article article, BuildContext context) {
-    double? deviceHeight = MediaQuery.of(context).size.height;
-    return ListTile(
-      leading: CachedNetworkImage(
+  Widget switchImage(Article article) {
+    return SizedBox(
+      child: CachedNetworkImage(
         imageBuilder: (context, imageProvider) => Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -89,6 +87,13 @@ class ArticleListView extends StatelessWidget {
         width: 38,
         height: 38,
       ),
+    );
+  }
+
+  listTile(Article article, BuildContext context, {required bool showImage}) {
+    double? deviceHeight = MediaQuery.of(context).size.height;
+    return ListTile(
+      leading: showImage ? switchImage(article) : null,
       title: Text(
         article.title,
         maxLines: 2,
@@ -101,7 +106,12 @@ class ArticleListView extends StatelessWidget {
       ),
       onTap: () {
         showModalBottomSheet(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(10.0),
+            ),
+          ),
           context: context,
           isScrollControlled: true,
           builder: (BuildContext context) {
@@ -109,6 +119,7 @@ class ArticleListView extends StatelessWidget {
               height: deviceHeight * 0.9,
               child: ModalArticle(
                 url: article.url,
+                text: 'article',
               ),
             );
           },

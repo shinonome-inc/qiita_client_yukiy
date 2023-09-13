@@ -41,11 +41,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-      }
       await _fetchTagData();
     }
   }
@@ -71,12 +66,13 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
             }
             if (snapshot.hasData) {
               return ArticleListView(
-                  articles: listTagDetail,
-                  scrollController: _scrollController,
-                  itemCount: _isLoading
-                      ? listTagDetail.length + 1
-                      : listTagDetail.length,
-                  showGreyPart: true);
+                articles: listTagDetail,
+                scrollController: _scrollController,
+                itemCount: _isLoading
+                    ? listTagDetail.length + 1
+                    : listTagDetail.length,
+                showGreyPart: true,
+              );
             } else if (snapshot.hasError) {
               return const Icon(
                 Icons.error_outline,
