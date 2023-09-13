@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'qiita_search_bar.dart';
 
+// ignore: must_be_immutable
 class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(375, showSearchBar ? 114 : kToolbarHeight);
@@ -23,11 +24,13 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0.5, //影を消す
       backgroundColor: Colors.white,
-      title: Text(
-        appBarText,
-        style: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Pacifico-Regular',
+      title: Center(
+        child: Text(
+          appBarText,
+          style: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Pacifico-Regular',
+          ),
         ),
       ),
       iconTheme: const IconThemeData(color: Color(0xFF468300)),

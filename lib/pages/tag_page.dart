@@ -4,6 +4,8 @@ import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/tag_grid_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
+import 'error_page.dart';
+
 class TagPage extends StatefulWidget {
   const TagPage({
     Key? key,
@@ -37,9 +39,20 @@ class _TagPageState extends State<TagPage> {
   Future<void> _fetchTagData() async {
     print('タグ数は $pageNumberです');
     print("タグ一覧取得");
-    _isLoading = true;
+    _isLoading = false;
     futureTag = QiitaClient.fetchTags(pageNumber);
-    await Future.delayed(const Duration(seconds: 3));
+    listTags.addAll(await futureTag);
+    print('タグ件数: ${listTags.length}');
+
+    if (mounted) {
+      setState(
+        () {
+          if (listTags.isNotEmpty) {
+            pageNumber++;
+          }
+        },
+      );
+    }
   }
 
   void _scrollListener() async {
@@ -57,46 +70,34 @@ class _TagPageState extends State<TagPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: UpperBar(
-          showSearchBar: false,
-          appBarText: 'Tags',
-          textField: const TextField(),
-          automaticallyImplyLeading: false,
-        ),
-        body: Center(
-          child: FutureBuilder<List<Tag>>(
-            future: futureTag,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  _isLoading) {
-                _isLoading = false;
-                pageNumber += 1;
-                listTags.addAll(snapshot.data ?? []);
-                print('タグ件数: ${listTags.length}');
-              }
-              if (snapshot.hasData) {
-                return TagGridView(
-                  tagList: listTags,
-                  itemCount: listTags.length,
-                  scrollController: _scrollController,
-                );
-              } else if (snapshot.hasError) {
-                return const Center(
-                  child: Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
-                );
-              }
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: UpperBar(
+        showSearchBar: false,
+        appBarText: 'Tags',
+        textField: const TextField(),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: FutureBuilder<List<Tag>>(
+          future: futureTag,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return TagGridView(
+                tagList: listTags,
+                itemCount: listTags.length,
+                scrollController: _scrollController,
+              );
+            } else if (snapshot.hasError) {
               print(snapshot.error);
-              return const CircularProgressIndicator();
-            },
-          ),
+              return ErrorPage(
+                onTapped: () {
+                  _fetchTagData();
+                },
+              );
+            }
+            return const CircularProgressIndicator();
+          },
         ),
       ),
     );
