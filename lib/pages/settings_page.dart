@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qiita_client_yukiy/constants/modal_text.dart';
+import 'package:qiita_client_yukiy/pages/top_page.dart';
+import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 import 'package:qiita_client_yukiy/ui_components/variable_height_list_tile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -86,14 +90,51 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove("token");
+    print("ログアウトしました");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const TopPage()),
+    );
+  }
+
+  Future<void> confirmLogout(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('ログアウトの確認'),
+          content: const Text('本当にログアウトしますか？'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('キャンセル'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('ログアウト'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                logout(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
-      appBar: UpperBar(
+      appBar: const UpperBar(
         showSearchBar: false,
         appBarText: 'Settings',
-        textField: const TextField(),
+        textField: TextField(),
         automaticallyImplyLeading: false,
       ),
       body: Column(
@@ -124,12 +165,29 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           customDivider(),
-          const SettingSectionHeader(text: "その他"),
-          const VariableHeightListTile(
-            title: "ログアウトする",
-            trailing: SizedBox.shrink(),
+          FutureBuilder<bool>(
+            future: QiitaClient.switchPage(),
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              final isLoggedIn = snapshot.data ?? false;
+              if (isLoggedIn) {
+                return Column(
+                  children: [
+                    const SettingSectionHeader(text: "その他"),
+                    VariableHeightListTile(
+                      title: "ログアウトする",
+                      trailing: const SizedBox.shrink(),
+                      onTap: () {
+                        confirmLogout(context);
+                      },
+                    ),
+                    customDivider(),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
-          customDivider(),
         ],
       ),
     );
