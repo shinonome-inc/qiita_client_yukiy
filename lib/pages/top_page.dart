@@ -1,21 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/pages/bottom_navigation.dart';
+import 'package:qiita_client_yukiy/services/qiita_client.dart';
+import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 import 'package:qiita_client_yukiy/ui_components/thin_long_rounded_button.dart';
 
 class TopPage extends StatefulWidget {
-  const TopPage({Key? key}) : super(key: key);
+  const TopPage({Key? key, this.code}) : super(key: key);
+  final String? code;
 
   @override
   State<TopPage> createState() => _TopPageState();
 }
 
 class _TopPageState extends State<TopPage> {
-  late double screenHeight = 0;
+  String? accessToken = '';
+  bool isLoading = false;
+
+  Future<void> login() async {
+    isLoading = true;
+    accessToken = await QiitaClient.fetchAccessToken(widget.code!);
+    await QiitaClient.saveAccessToken(accessToken!);
+    print('accessToken💫 $accessToken');
+    if (!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BottomNavigation(),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.code != null) {
+      login();
+    }
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-
+    double? deviceHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -38,7 +64,7 @@ class _TopPageState extends State<TopPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SizedBox(
-                  height: screenHeight / 4,
+                  height: deviceHeight / 4,
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -68,10 +94,23 @@ class _TopPageState extends State<TopPage> {
                   text: 'ログイン',
                   backgroundColor: const Color(0xFF468300),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNavigation()),
+                    showModalBottomSheet(
+                      backgroundColor: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10.0),
+                        ),
+                      ),
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return SizedBox(
+                          height: deviceHeight * 0.9,
+                          child: ModalArticle(
+                              url: QiitaClient.fetchLogin(),
+                              text: "Qiita Auth"),
+                        );
+                      },
                     );
                   },
                 ),
@@ -81,7 +120,13 @@ class _TopPageState extends State<TopPage> {
                 ThinLongRoundedButton(
                   text: 'ログインせずに利用する',
                   backgroundColor: Colors.transparent,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNavigation()),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 81,

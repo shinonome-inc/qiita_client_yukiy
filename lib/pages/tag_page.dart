@@ -71,10 +71,10 @@ class _TagPageState extends State<TagPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: UpperBar(
+      appBar: const UpperBar(
         showSearchBar: false,
         appBarText: 'Tags',
-        textField: const TextField(),
+        textField: TextField(),
         automaticallyImplyLeading: false,
       ),
       body: Center(

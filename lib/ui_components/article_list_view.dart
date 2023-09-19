@@ -6,17 +6,19 @@ import 'package:qiita_client_yukiy/ui_components/grey_article_part.dart';
 import 'package:qiita_client_yukiy/ui_components/modal_article.dart';
 
 class ArticleListView extends StatelessWidget {
-  ArticleListView(
+  const ArticleListView(
       {Key? key,
       required this.articles,
       required this.scrollController,
       required this.itemCount,
-      this.showGreyPart = false})
+      this.showGreyPart = false,
+      this.showImage = true})
       : super(key: key);
   final ScrollController scrollController;
   final List<Article> articles;
   final int itemCount;
   final bool showGreyPart;
+  final bool showImage;
 
   String subtitle(Article article) {
     final dateTime = DateTime.parse(article.dateTime);
@@ -41,11 +43,11 @@ class ArticleListView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (showGreyPart) GreyArticlePart(),
-              listTile(article, context),
+              listTile(article, context, showImage: showImage),
             ],
           );
         }
-        return listTile(article, context);
+        return listTile(article, context, showImage: showImage);
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(
         color: Color.fromRGBO(178, 178, 178, 1),
@@ -72,10 +74,9 @@ class ArticleListView extends StatelessWidget {
     );
   }
 
-  listTile(Article article, BuildContext context) {
-    double? deviceHeight = MediaQuery.of(context).size.height;
-    return ListTile(
-      leading: CachedNetworkImage(
+  Widget switchImage(Article article) {
+    return SizedBox(
+      child: CachedNetworkImage(
         imageBuilder: (context, imageProvider) => Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -90,6 +91,13 @@ class ArticleListView extends StatelessWidget {
         width: 38,
         height: 38,
       ),
+    );
+  }
+
+  listTile(Article article, BuildContext context, {required bool showImage}) {
+    double? deviceHeight = MediaQuery.of(context).size.height;
+    return ListTile(
+      leading: showImage ? switchImage(article) : null,
       title: Text(
         article.title,
         maxLines: 2,
@@ -102,7 +110,12 @@ class ArticleListView extends StatelessWidget {
       ),
       onTap: () {
         showModalBottomSheet(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(10.0),
+            ),
+          ),
           context: context,
           isScrollControlled: true,
           builder: (BuildContext context) {
@@ -110,6 +123,7 @@ class ArticleListView extends StatelessWidget {
               height: deviceHeight * 0.9,
               child: ModalArticle(
                 url: article.url,
+                text: 'article',
               ),
             );
           },

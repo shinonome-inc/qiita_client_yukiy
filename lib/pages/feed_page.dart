@@ -5,7 +5,6 @@ import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 import '../models/article.dart';
 import '../ui_components/no_search_result.dart';
-import 'api_limit_exceeded_page.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -22,7 +21,6 @@ class _FeedPageState extends State<FeedPage> {
   int pageNumber = 1;
   final _editController = TextEditingController();
   bool showNoSearchResult = false;
-  int scrollCount = 0;
 
   @override
   void initState() {
@@ -56,7 +54,6 @@ class _FeedPageState extends State<FeedPage> {
     double positionRate =
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
-
     if (positionRate > threshold && !_isLoading) {
       if (mounted) {
         setState(() {
@@ -64,16 +61,6 @@ class _FeedPageState extends State<FeedPage> {
         });
       }
       await _fetchData();
-      scrollCount++;
-
-      // APIの制限エラーチェック 未ログイン時の条件を追加する必要あり。ログインしてたら回数制限無し
-      if (scrollCount >= 60) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => ApiLimitExceededPage(),
-          ),
-        );
-      }
     }
   }
 
