@@ -58,13 +58,14 @@ class QiitaClient {
 
   static Future<List<Article>> fetchArticle(
       String searchValue, int pageNumber) async {
+    final accessToken = await getAccessToken();
     String url =
         'https://qiita.com/api/v2/items?page=$pageNumber&query=title%3A$searchValue';
     final response = await http.get(
       Uri.parse(url),
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: accessToken == null
+          ? null
+          : {HttpHeaders.authorizationHeader: 'Bearer $accessToken'},
     );
     if (response.statusCode == 200) {
       final List<dynamic> jsonArray = json.decode(response.body);
@@ -166,5 +167,16 @@ class QiitaClient {
     } else {
       return true;
     }
+  }
+
+  static Future<Map<String, String>> getAuthorizedHeaders() async {
+    final token = await getAccessToken();
+    if (token == null) {
+      throw Exception('Access token is missing.');
+    }
+    return {
+      HttpHeaders.authorizationHeader: "Bearer $token",
+      'Content-Type': 'application/json',
+    };
   }
 }

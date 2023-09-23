@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qiita_client_yukiy/pages/error_page.dart';
 import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/article_list_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
@@ -15,12 +17,12 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   List<Article> listArticle = [];
-  Future<List<Article>>? futureArticles;
   late ScrollController _scrollController;
-  late bool _isLoading = true;
+  bool _isLoading = true;
   int pageNumber = 1;
-  final _editController = TextEditingController();
+  TextEditingController _editController = TextEditingController();
   bool showNoSearchResult = false;
+  bool isNetworkError = false;
 
   @override
   void initState() {
@@ -31,23 +33,32 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> _fetchData() async {
-    print("fetched");
-    await Future.delayed(const Duration(seconds: 1));
-    print('pageNumber is $pageNumber');
-    _isLoading = false;
-    futureArticles = QiitaClient.fetchArticle("", pageNumber);
-    listArticle.addAll(await futureArticles!);
-    print('表示件数: ${listArticle.length}');
-
-    if (mounted) {
-      setState(
-        () {
-          if (listArticle.isNotEmpty) {
-            pageNumber++;
-          }
-        },
-      );
+    List<Article> newArticle = [];
+    setState(() {
+      _isLoading = true;
+      isNetworkError = false;
+    });
+    try {
+      newArticle =
+          await QiitaClient.fetchArticle(_editController.text, pageNumber);
+    } catch (e) {
+      setState(() {
+        isNetworkError = true;
+      });
+      throw Exception(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+    setState(() {
+      listArticle.addAll(newArticle);
+      showNoSearchResult = newArticle.isEmpty ? true : false;
+    });
+
+    print("fetched");
+    print('pageNumber is $pageNumber');
+    print('表示件数: ${listArticle.length}');
   }
 
   void _scrollListener() async {
@@ -60,29 +71,32 @@ class _FeedPageState extends State<FeedPage> {
           _isLoading = true;
         });
       }
+      pageNumber++;
       await _fetchData();
     }
   }
 
-  Future<void> _handleRefresh() async {
-    if (mounted) {
+  void _refresh() {
+    setState(() {
+      listArticle = [];
+      pageNumber = 1;
+    });
+  }
+
+  Future<void> _onRefresh() async {
+    if (showNoSearchResult) {
       setState(() {
-        listArticle = [];
-        pageNumber = 1;
-      });
-    }
-    futureArticles = QiitaClient.fetchArticle(_editController.text, pageNumber);
-    final searchResults = await futureArticles!;
-    if (searchResults.isEmpty) {
-      setState(() {
-        showNoSearchResult = true;
-      });
-    } else {
-      setState(() {
-        listArticle.addAll(searchResults);
+        _editController = TextEditingController();
         showNoSearchResult = false;
       });
     }
+    _refresh();
+    _fetchData();
+  }
+
+  Future<void> _searchResult() async {
+    _refresh();
+    _fetchData();
   }
 
   @override
@@ -94,7 +108,7 @@ class _FeedPageState extends State<FeedPage> {
         textField: TextField(
           controller: _editController,
           onSubmitted: (value) {
-            _handleRefresh();
+            _searchResult();
           },
           cursorColor: Colors.grey,
           decoration: InputDecoration(
@@ -124,34 +138,24 @@ class _FeedPageState extends State<FeedPage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: RefreshIndicator(
-          onRefresh: _handleRefresh,
-          child: FutureBuilder<List<Article>>(
-            future: futureArticles,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-                return const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                );
-              } else {
-                if (showNoSearchResult) {
-                  return NoSearchResult();
-                } else {
-                  return ArticleListView(
-                    articles: listArticle,
-                    scrollController: _scrollController,
-                    itemCount: _isLoading
-                        ? listArticle.length + 1
-                        : listArticle.length,
-                  );
-                }
-              }
-            },
-          ),
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: Center(
+          child: isNetworkError
+              ? ErrorPage(
+                  onTapped: _onRefresh,
+                )
+              : showNoSearchResult
+                  ? NoSearchResult()
+                  : _isLoading && listArticle.isEmpty
+                      ? const CupertinoActivityIndicator()
+                      : ArticleListView(
+                          articles: listArticle,
+                          scrollController: _scrollController,
+                          itemCount: _isLoading
+                              ? listArticle.length + 1
+                              : listArticle.length,
+                        ),
         ),
       ),
     );

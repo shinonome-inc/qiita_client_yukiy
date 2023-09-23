@@ -23,13 +23,11 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0.5, //影を消す
       backgroundColor: Colors.white,
-      title: Center(
-        child: Text(
-          appBarText,
-          style: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'Pacifico-Regular',
-          ),
+      title: Text(
+        appBarText,
+        style: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Pacifico-Regular',
         ),
       ),
       iconTheme: const IconThemeData(color: Color(0xFF468300)),
