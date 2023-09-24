@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/ui_components/article_list_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
 import '../models/article.dart';
 import '../services/qiita_client.dart';
+import '../ui_components/no_search_result.dart';
 import 'error_page.dart';
 
 class TagDetailListPage extends StatefulWidget {
@@ -105,13 +107,17 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
               ? ErrorPage(
                   onTapped: _onRefresh,
                 )
-              : ArticleListView(
-                  articles: listTagDetail,
-                  scrollController: _scrollController,
-                  itemCount: _isLoading
-                      ? listTagDetail.length + 1
-                      : listTagDetail.length,
-                ),
+              : showError
+                  ? NoSearchResult()
+                  : _isLoading && listTagDetail.isEmpty
+                      ? const CupertinoActivityIndicator()
+                      : ArticleListView(
+                          articles: listTagDetail,
+                          scrollController: _scrollController,
+                          itemCount: _isLoading
+                              ? listTagDetail.length + 1
+                              : listTagDetail.length,
+                        ),
         ),
       ),
     );

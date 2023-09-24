@@ -5,6 +5,9 @@ import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/tag_grid_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
+import '../ui_components/no_search_result.dart';
+import 'error_page.dart';
+
 class TagPage extends StatefulWidget {
   const TagPage({
     Key? key,
@@ -20,6 +23,8 @@ class _TagPageState extends State<TagPage> {
   late Future<List<Tag>> futureTag;
   late bool _isLoading = true;
   late ScrollController _scrollController;
+  bool showError = false;
+  bool isNetworkError = false;
 
   @override
   void initState() {
@@ -30,28 +35,29 @@ class _TagPageState extends State<TagPage> {
   }
 
   Future<void> _fetchTagData() async {
+    List<Tag> newTags = [];
+    setState(() {
+      _isLoading = true;
+      isNetworkError = false;
+    });
+    try {
+      newTags = await QiitaClient.fetchTags(pageNumber);
+    } catch (e) {
+      setState(() {
+        isNetworkError = true;
+      });
+      throw Exception(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    setState(() {
+      listTags.addAll(newTags);
+      showError = newTags.isEmpty ? true : false;
+    });
     print('タグ数は $pageNumber です');
     print("タグ一覧取得");
-    _isLoading = true;
-    futureTag = QiitaClient.fetchTags(pageNumber);
-    await Future.delayed(const Duration(seconds: 3));
-  }
-
-  Future<void> _handleRefresh() async {
-    if (mounted) {
-      setState(() {
-        listTags = [];
-        pageNumber = 1;
-      });
-    }
-    futureTag = QiitaClient.fetchTags(pageNumber);
-    final tags = await futureTag;
-    if (tags.isNotEmpty) {
-      setState(() {
-        listTags.addAll(tags);
-        pageNumber += 1;
-      });
-    }
   }
 
   void _scrollListener() async {
@@ -64,8 +70,26 @@ class _TagPageState extends State<TagPage> {
           _isLoading = true;
         });
       }
+      pageNumber++;
       await _fetchTagData();
     }
+  }
+
+  void _refresh() {
+    setState(() {
+      listTags = [];
+      pageNumber = 1;
+    });
+  }
+
+  Future<void> _onRefresh() async {
+    if (showError) {
+      setState(() {
+        showError = false;
+      });
+    }
+    _refresh();
+    _fetchTagData();
   }
 
   @override
@@ -78,38 +102,22 @@ class _TagPageState extends State<TagPage> {
         textField: TextField(),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: RefreshIndicator(
-          onRefresh: _handleRefresh,
-          child: FutureBuilder<List<Tag>>(
-            future: futureTag,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  _isLoading) {
-                _isLoading = false;
-                pageNumber += 1;
-                listTags.addAll(snapshot.data ?? []);
-                print('タグ件数: ${listTags.length}');
-              }
-              if (snapshot.hasData) {
-                return TagGridView(
-                  tagList: listTags,
-                  itemCount: listTags.length,
-                  scrollController: _scrollController,
-                );
-              } else if (snapshot.hasError) {
-                return const Center(
-                  child: Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
-                );
-              }
-              print(snapshot.error);
-              return const CupertinoActivityIndicator();
-            },
-          ),
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: Center(
+          child: isNetworkError
+              ? ErrorPage(
+                  onTapped: _onRefresh,
+                )
+              : showError
+                  ? NoSearchResult()
+                  : _isLoading && listTags.isEmpty
+                      ? const CupertinoActivityIndicator()
+                      : TagGridView(
+                          tagList: listTags,
+                          itemCount: listTags.length,
+                          scrollController: _scrollController,
+                        ),
         ),
       ),
     );
