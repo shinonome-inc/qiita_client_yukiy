@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/models/authenticated_user.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
@@ -87,10 +88,10 @@ class _UserPageState extends State<UserPage> {
                 } else if (snapshot.hasError) {
                   return const Text("受け取れていません");
                 }
-                return const SizedBox(
+                return SizedBox(
                   height: 223,
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: CupertinoActivityIndicator(),
                   ),
                 );
               },

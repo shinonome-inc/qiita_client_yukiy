@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/ui_components/article_list_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
@@ -80,7 +81,7 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
                 size: 60,
               );
             }
-            return const CircularProgressIndicator();
+            return const CupertinoActivityIndicator();
           },
         ),
       ),

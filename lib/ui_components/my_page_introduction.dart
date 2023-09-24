@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/models/authenticated_user.dart';
 
@@ -32,7 +33,7 @@ class MyPageIntroduction extends StatelessWidget {
                     ),
                   ),
                   placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
+                      const CupertinoActivityIndicator(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   imageUrl: authenticatedUser!.profileImageUrl,
                   width: 80,

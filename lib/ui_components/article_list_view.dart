@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qiita_client_yukiy/models/article.dart';
@@ -64,7 +65,7 @@ class ArticleListView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
+            CupertinoActivityIndicator(),
             SizedBox(
               height: 8,
             )
@@ -85,7 +86,7 @@ class ArticleListView extends StatelessWidget {
             ),
           ),
         ),
-        placeholder: (context, url) => const CircularProgressIndicator(),
+        placeholder: (context, url) => const CupertinoActivityIndicator(),
         errorWidget: (context, url, error) => const Icon(Icons.error),
         imageUrl: article.user.iconUrl,
         width: 38,

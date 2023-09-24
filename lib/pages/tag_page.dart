@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/models/tag.dart';
 import 'package:qiita_client_yukiy/services/qiita_client.dart';
@@ -106,7 +107,7 @@ class _TagPageState extends State<TagPage> {
                 );
               }
               print(snapshot.error);
-              return const CircularProgressIndicator();
+              return const CupertinoActivityIndicator();
             },
           ),
         ),
