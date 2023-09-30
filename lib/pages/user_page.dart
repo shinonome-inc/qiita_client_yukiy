@@ -109,16 +109,16 @@ class _UserPageState extends State<UserPage> {
           textField: TextField(),
           automaticallyImplyLeading: false,
         ),
-        body: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: _isLoading && listArticle.isEmpty
-              ? const Center(
-                  child: CupertinoActivityIndicator(),
-                )
-              : Column(
-                  children: [
-                    MyPageIntroduction(authenticatedUser: authenticatedUser),
-                    Expanded(
+        body: _isLoading && listArticle.isEmpty
+            ? const Center(
+                child: CupertinoActivityIndicator(),
+              )
+            : Column(
+                children: [
+                  MyPageIntroduction(authenticatedUser: authenticatedUser),
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: _onRefresh,
                       child: ArticleListView(
                         articles: listArticle,
                         scrollController: _scrollController,
@@ -128,9 +128,9 @@ class _UserPageState extends State<UserPage> {
                         showImage: false,
                       ),
                     ),
-                  ],
-                ),
-        ),
+                  ),
+                ],
+              ),
       ),
     );
   }

@@ -31,6 +31,7 @@ class ArticleListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      physics: const AlwaysScrollableScrollPhysics(),
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       controller: scrollController,
       itemCount: itemCount,
@@ -50,10 +51,10 @@ class ArticleListView extends StatelessWidget {
         }
         return listTile(article, context, showImage: showImage);
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(
-        color: Color.fromRGBO(178, 178, 178, 1),
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        color: const Color.fromRGBO(178, 178, 178, 1),
         thickness: 0.5,
-        indent: 62,
+        indent: showImage ? 70 : 16,
       ),
     );
   }
@@ -98,6 +99,7 @@ class ArticleListView extends StatelessWidget {
   listTile(Article article, BuildContext context, {required bool showImage}) {
     double? deviceHeight = MediaQuery.of(context).size.height;
     return ListTile(
+      minLeadingWidth: 8,
       leading: showImage ? switchImage(article) : null,
       title: Text(
         article.title,
