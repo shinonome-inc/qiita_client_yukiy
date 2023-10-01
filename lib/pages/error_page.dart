@@ -13,23 +13,27 @@ class ErrorPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: screenHeight / 7),
           Container(
-            margin: const EdgeInsets.only(bottom: 36),
             height: 80,
             width: 80,
             child: Image.asset('assets/images/network_error.png'),
           ),
+          const SizedBox(
+            height: 36,
+          ),
           Container(
-            margin: const EdgeInsets.only(bottom: 6),
             child: const Text(
               "ネットワークエラー",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
           ),
+          const SizedBox(
+            height: 6,
+          ),
           Container(
-            margin: const EdgeInsets.only(bottom: 6),
             child: const Text(
               'お手数ですが電波の良い場所で\n再度読み込みをお願いします',
               style: TextStyle(
@@ -37,6 +41,9 @@ class ErrorPage extends StatelessWidget {
                 height: 2,
               ),
             ),
+          ),
+          const SizedBox(
+            height: 6,
           ),
           Container(
             width: double.infinity,
