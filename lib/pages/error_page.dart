@@ -13,7 +13,6 @@ class ErrorPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: screenHeight / 7),
           SizedBox(
@@ -38,12 +37,9 @@ class ErrorPage extends StatelessWidget {
               height: 2,
             ),
           ),
-          const SizedBox(
-            height: 6,
-          ),
-          Container(
+          const Spacer(),
+          SizedBox(
             width: double.infinity,
-            margin: EdgeInsets.only(top: screenHeight / 3.5),
             child: ThinLongRoundedButton(
               text: '再読み込みする',
               backgroundColor: const Color(0xFF74C13A),
