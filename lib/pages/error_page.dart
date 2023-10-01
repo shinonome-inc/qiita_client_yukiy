@@ -16,7 +16,7 @@ class ErrorPage extends StatelessWidget {
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: screenHeight / 7),
-          Container(
+          SizedBox(
             height: 80,
             width: 80,
             child: Image.asset('assets/images/network_error.png'),
@@ -24,22 +24,18 @@ class ErrorPage extends StatelessWidget {
           const SizedBox(
             height: 36,
           ),
-          Container(
-            child: const Text(
-              "ネットワークエラー",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            ),
+          const Text(
+            "ネットワークエラー",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           const SizedBox(
             height: 6,
           ),
-          Container(
-            child: const Text(
-              'お手数ですが電波の良い場所で\n再度読み込みをお願いします',
-              style: TextStyle(
-                fontSize: 12,
-                height: 2,
-              ),
+          const Text(
+            'お手数ですが電波の良い場所で\n再度読み込みをお願いします',
+            style: TextStyle(
+              fontSize: 12,
+              height: 2,
             ),
           ),
           const SizedBox(
