@@ -80,10 +80,16 @@ class QiitaClient {
 
   static Future<List<Tag>> fetchTags(int pageNumber) async {
     //タグ一覧
+    final accessToken = await getAccessToken();
     String url =
         'https://qiita.com/api/v2/tags?page=$pageNumber&per_page=20&sort=count';
 
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(
+      Uri.parse(url),
+      headers: accessToken == null
+          ? null
+          : {HttpHeaders.authorizationHeader: 'Bearer $accessToken'},
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonArray = json.decode(response.body);
       final tagList = jsonArray.map((json) => Tag.fromJson(json)).toList();
