@@ -45,6 +45,7 @@ class _TopPageState extends State<TopPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Stack(
           children: <Widget>[
             Container(
