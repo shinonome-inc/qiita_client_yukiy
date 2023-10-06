@@ -94,32 +94,30 @@ class _TagPageState extends State<TagPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: const UpperBar(
-        showSearchBar: false,
-        appBarText: 'Tags',
-        textField: TextField(),
-        automaticallyImplyLeading: false,
-      ),
-      body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: Center(
-          child: isNetworkError
-              ? ErrorPage(
-                  onTapped: _onRefresh,
-                )
-              : showError
-                  ? NoSearchResult()
-                  : _isLoading && listTags.isEmpty
-                      ? const CupertinoActivityIndicator()
-                      : TagGridView(
-                          tagList: listTags,
-                          itemCount: listTags.length,
-                          scrollController: _scrollController,
-                        ),
-        ),
-      ),
-    );
+    return isNetworkError
+        ? ErrorPage(
+            onTapped: _onRefresh,
+          )
+        : Scaffold(
+            backgroundColor: Colors.white,
+            appBar: const UpperBar(
+              showSearchBar: false,
+              appBarText: 'Tags',
+              textField: TextField(),
+              automaticallyImplyLeading: false,
+            ),
+            body: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: Center(
+                child: _isLoading && listTags.isEmpty
+                        ? const CupertinoActivityIndicator()
+                        : TagGridView(
+                            tagList: listTags,
+                            itemCount: listTags.length,
+                            scrollController: _scrollController,
+                          ),
+              ),
+            ),
+          );
   }
 }

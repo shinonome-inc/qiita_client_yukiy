@@ -101,63 +101,63 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: UpperBar(
-        showSearchBar: true,
-        appBarText: 'Feed',
-        textField: TextField(
-          controller: _editController,
-          onSubmitted: (value) {
-            _searchResult();
-          },
-          cursorColor: Colors.grey,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.fromLTRB(30, 7, 1, 7),
-            fillColor: const Color.fromRGBO(118, 118, 128, 0.12),
-            filled: true,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none),
-            hintText: 'Search',
-            prefixIcon: const Icon(Icons.search),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _editController.clear();
-              },
-              icon: const Icon(Icons.clear),
+    return isNetworkError
+        ? ErrorPage(
+            onTapped: _onRefresh,
+          )
+        : Scaffold(
+            appBar: UpperBar(
+              showSearchBar: true,
+              appBarText: 'Feed',
+              textField: TextField(
+                controller: _editController,
+                onSubmitted: (value) {
+                  _searchResult();
+                },
+                cursorColor: Colors.grey,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.fromLTRB(30, 7, 1, 7),
+                  fillColor: const Color.fromRGBO(118, 118, 128, 0.12),
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none),
+                  hintText: 'Search',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      _editController.clear();
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
+                  suffixIconColor: Colors.grey,
+                  iconColor: const Color.fromRGBO(142, 142, 147, 0),
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 17,
+                    letterSpacing: -0.408,
+                    fontFamily: "Noto_Sans_JP",
+                  ),
+                ),
+              ),
+              automaticallyImplyLeading: false,
             ),
-            suffixIconColor: Colors.grey,
-            iconColor: const Color.fromRGBO(142, 142, 147, 0),
-            hintStyle: const TextStyle(
-              color: Colors.grey,
-              fontSize: 17,
-              letterSpacing: -0.408,
-              fontFamily: "Noto_Sans_JP",
+            body: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: Center(
+                child: showNoSearchResult
+                    ? NoSearchResult()
+                    : _isLoading && listArticle.isEmpty
+                        ? const CupertinoActivityIndicator()
+                        : ArticleListView(
+                            articles: listArticle,
+                            scrollController: _scrollController,
+                            itemCount: _isLoading
+                                ? listArticle.length + 1
+                                : listArticle.length,
+                          ),
+              ),
             ),
-          ),
-        ),
-        automaticallyImplyLeading: false,
-      ),
-      body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: Center(
-          child: isNetworkError
-              ? ErrorPage(
-                  onTapped: _onRefresh,
-                )
-              : showNoSearchResult
-                  ? NoSearchResult()
-                  : _isLoading && listArticle.isEmpty
-                      ? const CupertinoActivityIndicator()
-                      : ArticleListView(
-                          articles: listArticle,
-                          scrollController: _scrollController,
-                          itemCount: _isLoading
-                              ? listArticle.length + 1
-                              : listArticle.length,
-                        ),
-        ),
-      ),
-    );
+          );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../ui_components/thin_long_rounded_button.dart';
+import '../ui_components/upper_bar.dart';
 
 class ErrorPage extends StatelessWidget {
   ErrorPage({Key? key, required this.onTapped}) : super(key: key);
@@ -11,6 +12,12 @@ class ErrorPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: const UpperBar(
+        showSearchBar: false,
+        appBarText: '',
+        textField: TextField(),
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: const Color(0xFFFFFFFF),
       body: Column(
         children: [

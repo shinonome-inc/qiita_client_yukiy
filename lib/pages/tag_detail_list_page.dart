@@ -94,32 +94,32 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: UpperBar(
-        appBarText: widget.tagName!,
-        textField: const TextField(),
-        automaticallyImplyLeading: true,
-      ),
-      body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: Center(
-          child: isNetworkError
-              ? ErrorPage(
-                  onTapped: _onRefresh,
-                )
-              : showError
-                  ? NoSearchResult()
-                  : _isLoading && listTagDetail.isEmpty
-                      ? const CupertinoActivityIndicator()
-                      : ArticleListView(
-                          articles: listTagDetail,
-                          scrollController: _scrollController,
-                          itemCount: _isLoading
-                              ? listTagDetail.length + 1
-                              : listTagDetail.length,
-                        ),
-        ),
-      ),
-    );
+    return isNetworkError
+        ? ErrorPage(
+            onTapped: _onRefresh,
+          )
+        : Scaffold(
+            appBar: UpperBar(
+              appBarText: widget.tagName!,
+              textField: const TextField(),
+              automaticallyImplyLeading: true,
+            ),
+            body: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: Center(
+                child: showError
+                    ? NoSearchResult()
+                    : _isLoading && listTagDetail.isEmpty
+                        ? const CupertinoActivityIndicator()
+                        : ArticleListView(
+                            articles: listTagDetail,
+                            scrollController: _scrollController,
+                            itemCount: _isLoading
+                                ? listTagDetail.length + 1
+                                : listTagDetail.length,
+                          ),
+              ),
+            ),
+          );
   }
 }
