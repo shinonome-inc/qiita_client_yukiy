@@ -54,7 +54,11 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
     }
     setState(() {
       listTagDetail.addAll(newTagDetail);
-      showError = newTagDetail.isEmpty ? true : false;
+      if (pageNumber == 1) {
+        showError = newTagDetail.isEmpty ? true : false;
+      } else {
+        showError = false;
+      }
     });
     print('TagPageNumber is $pageNumber');
     print("TagFetched");

@@ -53,7 +53,11 @@ class _FeedPageState extends State<FeedPage> {
     }
     setState(() {
       listArticle.addAll(newArticle);
-      showNoSearchResult = newArticle.isEmpty ? true : false;
+      if (pageNumber == 1) {
+        showNoSearchResult = newArticle.isEmpty ? true : false;
+      } else {
+        showNoSearchResult = false;
+      }
     });
 
     print("fetched");

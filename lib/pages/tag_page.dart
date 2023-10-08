@@ -53,7 +53,11 @@ class _TagPageState extends State<TagPage> {
     }
     setState(() {
       listTags.addAll(newTags);
-      showError = newTags.isEmpty ? true : false;
+      if (pageNumber == 1) {
+        showError = newTags.isEmpty ? true : false;
+      } else {
+        showError = false;
+      }
     });
     print('タグ数は $pageNumber です');
     print("タグ一覧取得");

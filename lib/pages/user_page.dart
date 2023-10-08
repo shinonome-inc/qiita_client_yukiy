@@ -23,7 +23,6 @@ class _UserPageState extends State<UserPage> {
   late ScrollController _scrollController;
   bool _isLoading = true;
   bool isNetworkError = false;
-  TextEditingController _editController = TextEditingController();
   bool showError = false;
 
   @override
@@ -56,7 +55,11 @@ class _UserPageState extends State<UserPage> {
     }
     setState(() {
       listArticle.addAll(newArticle);
-      showError = newArticle.isEmpty ? true : false;
+      if (pageNumber == 1) {
+        showError = newArticle.isEmpty ? true : false;
+      } else {
+        showError = false;
+      }
     });
 
     print("fetched");
@@ -90,7 +93,6 @@ class _UserPageState extends State<UserPage> {
   Future<void> _onRefresh() async {
     if (showError) {
       setState(() {
-        _editController = TextEditingController();
         showError = false;
       });
     }
