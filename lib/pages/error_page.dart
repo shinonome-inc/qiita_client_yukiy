@@ -15,7 +15,6 @@ class ErrorPage extends StatelessWidget {
       appBar: const UpperBar(
         showSearchBar: false,
         appBarText: '',
-        textField: TextField(),
         automaticallyImplyLeading: false,
       ),
       backgroundColor: const Color(0xFFFFFFFF),

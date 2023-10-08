@@ -106,7 +106,6 @@ class _UserPageState extends State<UserPage> {
         backgroundColor: Colors.white,
         appBar: const UpperBar(
           appBarText: 'MyPage',
-          textField: TextField(),
           automaticallyImplyLeading: false,
         ),
         body: _isLoading && listArticle.isEmpty

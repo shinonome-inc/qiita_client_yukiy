@@ -5,7 +5,6 @@ import 'package:qiita_client_yukiy/services/qiita_client.dart';
 import 'package:qiita_client_yukiy/ui_components/tag_grid_view.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
 
-import '../ui_components/no_search_result.dart';
 import 'error_page.dart';
 
 class TagPage extends StatefulWidget {
@@ -103,19 +102,18 @@ class _TagPageState extends State<TagPage> {
             appBar: const UpperBar(
               showSearchBar: false,
               appBarText: 'Tags',
-              textField: TextField(),
               automaticallyImplyLeading: false,
             ),
             body: RefreshIndicator(
               onRefresh: _onRefresh,
               child: Center(
                 child: _isLoading && listTags.isEmpty
-                        ? const CupertinoActivityIndicator()
-                        : TagGridView(
-                            tagList: listTags,
-                            itemCount: listTags.length,
-                            scrollController: _scrollController,
-                          ),
+                    ? const CupertinoActivityIndicator()
+                    : TagGridView(
+                        tagList: listTags,
+                        itemCount: listTags.length,
+                        scrollController: _scrollController,
+                      ),
               ),
             ),
           );

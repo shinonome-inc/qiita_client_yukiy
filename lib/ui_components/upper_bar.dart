@@ -5,13 +5,13 @@ import 'package:qiita_client_yukiy/ui_components/qiita_search_bar.dart';
 class UpperBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(375, showSearchBar ? 114 : kToolbarHeight);
-  final Widget textField;
+  final Widget? textField;
 
   const UpperBar({
     Key? key,
     this.showSearchBar = false,
     required this.appBarText,
-    required this.textField,
+    this.textField,
     required this.automaticallyImplyLeading,
   }) : super(key: key);
 
@@ -33,7 +33,7 @@ class UpperBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: const IconThemeData(color: Color(0xFF468300)),
       bottom: showSearchBar
           ? QiitaSearchBar(
-              textField: textField,
+              textField: textField!,
             )
           : null,
       automaticallyImplyLeading: automaticallyImplyLeading,

@@ -174,15 +174,4 @@ class QiitaClient {
       return true;
     }
   }
-
-  static Future<Map<String, String>> getAuthorizedHeaders() async {
-    final token = await getAccessToken();
-    if (token == null) {
-      throw Exception('Access token is missing.');
-    }
-    return {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-      'Content-Type': 'application/json',
-    };
-  }
 }

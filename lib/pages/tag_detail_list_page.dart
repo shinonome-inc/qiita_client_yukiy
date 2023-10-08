@@ -101,7 +101,6 @@ class _TagDetailListPageState extends State<TagDetailListPage> {
         : Scaffold(
             appBar: UpperBar(
               appBarText: widget.tagName!,
-              textField: const TextField(),
               automaticallyImplyLeading: true,
             ),
             body: RefreshIndicator(
