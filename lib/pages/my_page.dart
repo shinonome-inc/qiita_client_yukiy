@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:qiita_client_yukiy/pages/user_not_login_page.dart';
 import 'package:qiita_client_yukiy/pages/user_page.dart';
 
@@ -26,7 +26,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     if (isLogin == null) {
       // isLoginがnullの場合はローディングなどを表示するウィジェットを返す
-      return const CircularProgressIndicator();
+      return const CupertinoActivityIndicator();
     } else {
       return isLogin! ? const UserPage() : UserNotLoginPage();
     }

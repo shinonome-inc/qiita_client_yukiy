@@ -134,7 +134,6 @@ class SettingsPage extends StatelessWidget {
       appBar: const UpperBar(
         showSearchBar: false,
         appBarText: 'Settings',
-        textField: TextField(),
         automaticallyImplyLeading: false,
       ),
       body: Column(

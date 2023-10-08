@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qiita_client_yukiy/models/article.dart';
@@ -29,7 +30,9 @@ class ArticleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      physics: const AlwaysScrollableScrollPhysics(),
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       controller: scrollController,
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
@@ -37,19 +40,22 @@ class ArticleListView extends StatelessWidget {
           return _loadingView();
         }
         final article = articles[index];
-        return Column(
-          children: [
-            if (index == 0 && showGreyPart) GreyArticlePart(),
-            listTile(article, context, showImage: showImage),
-            const Divider(
-              color: Color.fromRGBO(178, 178, 178, 1),
-              thickness: 0.5,
-              height: 8,
-              indent: 20,
-            ),
-          ],
-        );
+        if (index == 0) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (showGreyPart) GreyArticlePart(),
+              listTile(article, context, showImage: showImage),
+            ],
+          );
+        }
+        return listTile(article, context, showImage: showImage);
       },
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        color: const Color.fromRGBO(178, 178, 178, 1),
+        thickness: 0.5,
+        indent: showImage ? 70 : 16,
+      ),
     );
   }
 
@@ -60,7 +66,7 @@ class ArticleListView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
+            CupertinoActivityIndicator(),
             SizedBox(
               height: 8,
             )
@@ -81,7 +87,7 @@ class ArticleListView extends StatelessWidget {
             ),
           ),
         ),
-        placeholder: (context, url) => const CircularProgressIndicator(),
+        placeholder: (context, url) => const CupertinoActivityIndicator(),
         errorWidget: (context, url, error) => const Icon(Icons.error),
         imageUrl: article.user.iconUrl,
         width: 38,
@@ -93,6 +99,7 @@ class ArticleListView extends StatelessWidget {
   listTile(Article article, BuildContext context, {required bool showImage}) {
     double? deviceHeight = MediaQuery.of(context).size.height;
     return ListTile(
+      minLeadingWidth: 8,
       leading: showImage ? switchImage(article) : null,
       title: Text(
         article.title,

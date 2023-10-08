@@ -13,9 +13,8 @@ class UserNotLoginPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: UpperBar(
+      appBar: const UpperBar(
         appBarText: 'MyPage',
-        textField: const TextField(),
         automaticallyImplyLeading: false,
       ),
       body: Column(

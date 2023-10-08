@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/models/tag.dart';
 import 'package:qiita_client_yukiy/services/qiita_client.dart';
@@ -20,39 +21,46 @@ class _TagPageState extends State<TagPage> {
   int pageNumber = 1;
   late Future<List<Tag>> futureTag;
   late bool _isLoading = true;
-  late Future<List<Tag>> futureTags;
   late ScrollController _scrollController;
-  bool? isLogin;
+  bool showError = false;
+  bool isNetworkError = false;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _fetchTagData();
-    Future.delayed(Duration.zero, () async {
-      isLogin = await QiitaClient.switchPage();
-      setState(() {}); // isLoginの値が更新されたことを反映するためにsetStateを呼び出す
-    });
     super.initState();
   }
 
   Future<void> _fetchTagData() async {
-    print('タグ数は $pageNumberです');
-    print("タグ一覧取得");
-    _isLoading = false;
-    futureTag = QiitaClient.fetchTags(pageNumber);
-    listTags.addAll(await futureTag);
-    print('タグ件数: ${listTags.length}');
-
-    if (mounted) {
-      setState(
-        () {
-          if (listTags.isNotEmpty) {
-            pageNumber++;
-          }
-        },
-      );
+    List<Tag> newTags = [];
+    setState(() {
+      _isLoading = true;
+      isNetworkError = false;
+    });
+    try {
+      newTags = await QiitaClient.fetchTags(pageNumber);
+    } catch (e) {
+      setState(() {
+        isNetworkError = true;
+      });
+      throw Exception(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+    setState(() {
+      listTags.addAll(newTags);
+      if (pageNumber == 1) {
+        showError = newTags.isEmpty ? true : false;
+      } else {
+        showError = false;
+      }
+    });
+    print('タグ数は $pageNumber です');
+    print("タグ一覧取得");
   }
 
   void _scrollListener() async {
@@ -60,46 +68,58 @@ class _TagPageState extends State<TagPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
-      setState(() {
-        _isLoading = true;
-      });
-
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+      pageNumber++;
       await _fetchTagData();
     }
   }
 
+  void _refresh() {
+    setState(() {
+      listTags = [];
+      pageNumber = 1;
+    });
+  }
+
+  Future<void> _onRefresh() async {
+    if (showError) {
+      setState(() {
+        showError = false;
+      });
+    }
+    _refresh();
+    _fetchTagData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: UpperBar(
-        showSearchBar: false,
-        appBarText: 'Tags',
-        textField: const TextField(),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: FutureBuilder<List<Tag>>(
-          future: futureTag,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return TagGridView(
-                tagList: listTags,
-                itemCount: listTags.length,
-                scrollController: _scrollController,
-              );
-            } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return ErrorPage(
-                onTapped: () {
-                  _fetchTagData();
-                },
-              );
-            }
-            return const CircularProgressIndicator();
-          },
-        ),
-      ),
-    );
+    return isNetworkError
+        ? ErrorPage(
+            onTapped: _onRefresh,
+          )
+        : Scaffold(
+            backgroundColor: Colors.white,
+            appBar: const UpperBar(
+              showSearchBar: false,
+              appBarText: 'Tags',
+              automaticallyImplyLeading: false,
+            ),
+            body: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: Center(
+                child: _isLoading && listTags.isEmpty
+                    ? const CupertinoActivityIndicator()
+                    : TagGridView(
+                        tagList: listTags,
+                        itemCount: listTags.length,
+                        scrollController: _scrollController,
+                      ),
+              ),
+            ),
+          );
   }
 }

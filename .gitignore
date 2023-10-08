@@ -42,10 +42,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
 # .env ファイルを追加
 .env
 
 pubspec.lock
 ios/Podfile.lock
-

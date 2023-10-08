@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qiita_client_yukiy/models/authenticated_user.dart';
 import 'package:qiita_client_yukiy/ui_components/upper_bar.dart';
@@ -17,11 +18,12 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   List<Article> listArticle = [];
   AuthenticatedUser? authenticatedUser;
-  Future<List<Article>>? futureArticles;
   Future<AuthenticatedUser>? futureAuthentication;
   int pageNumber = 1;
   late ScrollController _scrollController;
   bool _isLoading = true;
+  bool isNetworkError = false;
+  bool showError = false;
 
   @override
   void initState() {
@@ -32,26 +34,38 @@ class _UserPageState extends State<UserPage> {
   }
 
   Future<void> _fetchData() async {
-    print("fetched");
-    print('pageNumber is $pageNumber');
+    List<Article> newArticle = [];
     futureAuthentication = QiitaClient.fetchAuthenticatedUser();
     authenticatedUser = await futureAuthentication;
-
-    if (authenticatedUser == null) {
-      return;
+    setState(() {
+      _isLoading = true;
+      isNetworkError = false;
+    });
+    try {
+      newArticle = await QiitaClient.fetchAuthenticatedArticle(pageNumber);
+    } catch (e) {
+      setState(() {
+        isNetworkError = true;
+      });
+      throw Exception(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    _isLoading = false;
-    futureArticles = QiitaClient.fetchAuthenticatedArticle(pageNumber);
-    listArticle.addAll(await futureArticles!);
-    print('表示件数: ${listArticle.length}');
+    setState(() {
+      listArticle.addAll(newArticle);
+      if (pageNumber == 1) {
+        showError = newArticle.isEmpty ? true : false;
+      } else {
+        showError = false;
+      }
+    });
 
-    setState(
-      () {
-        if (listArticle.isNotEmpty) {
-          pageNumber++;
-        }
-      },
-    );
+    print("fetched");
+    print('pageNumber is $pageNumber');
+
+    print('表示件数: ${listArticle.length}');
   }
 
   void _scrollListener() async {
@@ -59,8 +73,31 @@ class _UserPageState extends State<UserPage> {
         _scrollController.offset / _scrollController.position.maxScrollExtent;
     const double threshold = 0.9;
     if (positionRate > threshold && !_isLoading) {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+      pageNumber++;
       await _fetchData();
     }
+  }
+
+  void _refresh() {
+    setState(() {
+      listArticle = [];
+      pageNumber = 1;
+    });
+  }
+
+  Future<void> _onRefresh() async {
+    if (showError) {
+      setState(() {
+        showError = false;
+      });
+    }
+    _refresh();
+    _fetchData();
   }
 
   @override
@@ -69,73 +106,32 @@ class _UserPageState extends State<UserPage> {
       onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: UpperBar(
+        appBar: const UpperBar(
           appBarText: 'MyPage',
-          textField: const TextField(),
           automaticallyImplyLeading: false,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FutureBuilder<AuthenticatedUser>(
-              future: futureAuthentication,
-              builder: (BuildContext context,
-                  AsyncSnapshot<AuthenticatedUser> snapshot) {
-                if (snapshot.hasData) {
-                  return MyPageIntroduction(
-                      authenticatedUser: authenticatedUser);
-                } else if (snapshot.hasError) {
-                  return const Text("受け取れていません");
-                }
-                return const SizedBox(
-                  height: 223,
-                  child: Center(
-                    child: CircularProgressIndicator(),
+        body: _isLoading && listArticle.isEmpty
+            ? const Center(
+                child: CupertinoActivityIndicator(),
+              )
+            : Column(
+                children: [
+                  MyPageIntroduction(authenticatedUser: authenticatedUser),
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: _onRefresh,
+                      child: ArticleListView(
+                        articles: listArticle,
+                        scrollController: _scrollController,
+                        itemCount: _isLoading
+                            ? listArticle.length + 1
+                            : listArticle.length,
+                        showImage: false,
+                      ),
+                    ),
                   ),
-                );
-              },
-            ),
-            Expanded(
-              child: FutureBuilder<List<Article>>(
-                future: futureArticles,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    print("Error is: ${snapshot.error}");
-                    return const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    );
-                  } else if (snapshot.hasData) {
-                    if (listArticle.isEmpty) {
-                      return const Center(child: Text("記事がありません"));
-                    } else {
-                      return LayoutBuilder(
-                        builder: (context, constraints) {
-                          print("👀 ${constraints.minHeight}");
-                          print("👀 ${constraints.maxHeight}");
-                          return SizedBox(
-                            height: constraints.minHeight,
-                            child: ArticleListView(
-                              articles: snapshot.data as List<Article>,
-                              scrollController: _scrollController,
-                              itemCount: _isLoading
-                                  ? listArticle.length + 1
-                                  : listArticle.length,
-                              showImage: false,
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  } else {
-                    return Container();
-                  }
-                },
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
