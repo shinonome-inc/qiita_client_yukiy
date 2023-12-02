@@ -49,9 +49,8 @@ class _TopPageState extends State<TopPage> {
         body: Stack(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.1),
-                image: const DecorationImage(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
                   image: AssetImage('assets/images/background.png'),
                   fit: BoxFit.fill,
                 ),
